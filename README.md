@@ -1,5 +1,7 @@
 # Clínica Vida+ — Projeto acadêmico
 
+link direto: https://almeidamarcos637-lgtm.github.io/Trabalho-Introdu-o-programa-o-30-10-2026-/
+
 Aplicação web responsiva, em português, que reúne cinco passos de uma atividade acadêmica: gestão ágil, cadastro em Python, lógica proposicional, fila FIFO e modelagem de casos de uso. O projeto usa apenas informações fictícias.
 
 > **Aviso:** esta é uma demonstração educacional, não um prontuário ou sistema clínico. Não use dados pessoais ou médicos reais. O quadro é inspirado no Trello, mas é local e **não está integrado nem foi criado no Trello**.
