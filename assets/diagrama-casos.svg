@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="use-case-svg" viewBox="0 0 1200 720" role="img" aria-labelledby="uml-title uml-desc">
+  <title id="uml-title">Diagrama de casos de uso — Clínica Vida+</title>
+  <desc id="uml-desc">Fora dos limites do sistema estão a Secretária e o Médico. A Secretária cadastra pacientes, agenda, confirma e cancela consultas. O Médico cancela consultas e gera receitas. Agendar consulta e Confirmar consulta incluem Verificar cadastro do paciente. Gerar receita inclui Imprimir receita.</desc>
+  <defs>
+    <marker id="include-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+      <path d="M1 1 L10 6 L1 11" fill="none" stroke="#47766b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="720" rx="18" fill="#ffffff"/>
+  <rect x="200" y="50" width="800" height="625" rx="16" fill="#f9fcfa" stroke="#a7beb3" stroke-width="2"/>
+  <text x="225" y="82" fill="#284d42" font-family="Arial, sans-serif" font-size="17" font-weight="700">Sistema de gestão de consultas</text>
+
+  <!-- Associações são linhas contínuas, sem setas. -->
+  <g fill="none" stroke="#759087" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M130 292 L290 150"/>
+    <path d="M130 292 L290 250"/>
+    <path d="M130 292 L290 350"/>
+    <path d="M130 292 L290 545"/>
+    <path d="M1070 342 L865 440"/>
+    <path d="M1130 342 L1150 342 L1150 650 L395 650 L395 581"/>
+  </g>
+
+  <!-- O sentido das setas é do caso base para o caso incluído. -->
+  <g fill="none" stroke="#47766b" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#include-arrow)">
+    <path d="M497 258 L635 288"/>
+    <path d="M497 342 L635 312"/>
+    <path d="M760 476 L760 509"/>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="15" fill="#466f63">
+    <rect x="520" y="235" width="89" height="24" rx="4" fill="#f9fcfa"/><text x="527" y="252">«include»</text>
+    <rect x="520" y="342" width="89" height="24" rx="4" fill="#f9fcfa"/><text x="527" y="359">«include»</text>
+    <rect x="773" y="481" width="89" height="24" rx="4" fill="#f9fcfa"/><text x="780" y="498">«include»</text>
+  </g>
+
+  <!-- Casos de uso dentro dos limites do sistema. -->
+  <g fill="#ffffff" stroke="#39816d" stroke-width="2">
+    <ellipse cx="395" cy="150" rx="105" ry="36"/>
+    <ellipse cx="395" cy="250" rx="105" ry="36"/>
+    <ellipse cx="395" cy="350" rx="105" ry="36"/>
+    <ellipse cx="395" cy="545" rx="105" ry="36"/>
+    <ellipse cx="760" cy="300" rx="130" ry="42"/>
+    <ellipse cx="760" cy="440" rx="105" ry="36"/>
+    <ellipse cx="760" cy="545" rx="105" ry="36"/>
+  </g>
+  <g fill="#213e35" font-family="Arial, sans-serif" font-size="17" text-anchor="middle">
+    <text x="395" y="156">Cadastrar paciente</text>
+    <text x="395" y="256">Agendar consulta</text>
+    <text x="395" y="356">Confirmar consulta</text>
+    <text x="395" y="551">Cancelar consulta</text>
+    <text x="760" y="294"><tspan x="760">Verificar cadastro</tspan><tspan x="760" dy="21">do paciente</tspan></text>
+    <text x="760" y="446">Gerar receita</text>
+    <text x="760" y="551">Imprimir receita</text>
+  </g>
+
+  <!-- Os atores permanecem fora do retângulo que delimita o sistema. -->
+  <g stroke="#28594c" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="100" cy="250" r="18"/><path d="M100 269 L100 330 M70 292 L130 292 M100 330 L76 366 M100 330 L124 366"/>
+    <circle cx="1100" cy="300" r="18"/><path d="M1100 319 L1100 380 M1070 342 L1130 342 M1100 380 L1076 416 M1100 380 L1124 416"/>
+  </g>
+  <g fill="#28594c" font-family="Arial, sans-serif" font-size="17" font-weight="700" text-anchor="middle">
+    <text x="100" y="397">Secretária</text>
+    <text x="1100" y="447">Médico</text>
+  </g>
+</svg>

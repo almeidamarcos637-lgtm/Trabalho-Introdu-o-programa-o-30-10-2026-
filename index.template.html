@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1d5645">
+  <meta name="description" content="Projeto acadêmico Clínica Vida+: planejamento ágil, Python, lógica, fila FIFO e casos de uso.">
+  <title>Clínica Vida+ | Projeto acadêmico</title>
+  <style>
+<!-- INJETAR_CSS -->
+  </style>
+</head>
+<body>
+  <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-overview" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-board" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M15 4v16M5.5 8h1M11.5 8h1M17.5 8h1"/></symbol>
+    <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 9 3 3-3 3m6 0h4"/></symbol>
+    <symbol id="i-logic" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16M9 3v18M16 3v18"/></symbol>
+    <symbol id="i-queue" viewBox="0 0 24 24"><path d="M4 6h12M4 12h9M4 18h12m1-9 3 3-3 3"/></symbol>
+    <symbol id="i-diagram" viewBox="0 0 24 24"><rect x="8" y="3" width="8" height="5" rx="1"/><rect x="2" y="16" width="7" height="5" rx="1"/><rect x="15" y="16" width="7" height="5" rx="1"/><path d="M12 8v4M5.5 16v-4h13v4"/></symbol>
+    <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 8V3h10v5M7 16H4V9h16v7h-3M7 13h10v8H7zM17 11h.01"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v11m-4-4 4 4 4-4M4 17v3h16v-3"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9M4 16l-1 5 5-1L19 9l-4-4L4 16zM14 6l4 4"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v5h4M9 12h6m-6 4h6"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M13 4h7v7M20 4l-9 9M18 14v6H4V6h6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 4h4M6 7l1 13h10l1-13M10 11v5m4-5v5"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 4h16v12H9l-5 4V4z"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5M19 12a7 7 0 0 0-12-5L4 10m1 2a7 7 0 0 0 12 5l3-3"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <div class="app-shell" id="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#inicio" aria-label="Clínica Vida+, ir para visão geral">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span></span>
+        <span class="brand-copy"><strong>Clínica Vida<span>+</span></strong><small>PROJETO ACADÊMICO</small></span>
+      </a>
+      <div class="sidebar-label">ÁREA DO PROJETO</div>
+      <nav class="side-nav" aria-label="Seções do projeto">
+        <a href="#inicio" data-route="inicio" class="nav-link"><svg class="icon"><use href="#i-overview"/></svg><span>Visão geral</span></a>
+        <div class="nav-group-label">OS CINCO PASSOS</div>
+        <a href="#sprints" data-route="sprints" class="nav-link"><svg class="icon"><use href="#i-board"/></svg><span>Planejamento ágil</span><small>01</small></a>
+        <a href="#python" data-route="python" class="nav-link"><svg class="icon"><use href="#i-terminal"/></svg><span>Cadastro em Python</span><small>02</small></a>
+        <a href="#logica" data-route="logica" class="nav-link"><svg class="icon"><use href="#i-logic"/></svg><span>Lógica proposicional</span><small>03</small></a>
+        <a href="#fila" data-route="fila" class="nav-link"><svg class="icon"><use href="#i-queue"/></svg><span>Fila de pacientes</span><small>04</small></a>
+        <a href="#casos" data-route="casos" class="nav-link"><svg class="icon"><use href="#i-diagram"/></svg><span>Casos de uso</span><small>05</small></a>
+      </nav>
+      <div class="sidebar-note">
+        <span class="sidebar-note-icon"><svg class="icon"><use href="#i-info"/></svg></span>
+        <div><strong>Um espaço para aprender.</strong><p>Conteúdo e informações exclusivamente demonstrativos.</p></div>
+      </div>
+      <div class="sidebar-footer"><span class="status-dot"></span> Ambiente demonstrativo</div>
+    </aside>
+
+    <div class="shell-content">
+      <header class="topbar">
+        <div class="breadcrumb"><span>PROJETO ACADÊMICO</span><span class="crumb-divider">/</span><strong id="current-page">Visão geral</strong></div>
+        <div class="top-actions">
+          <span class="demo-pill"><span class="status-dot"></span> Dados fictícios</span>
+          <button class="button button-quiet top-print" id="print-project" type="button"><svg class="icon"><use href="#i-print"/></svg><span>Imprimir</span></button>
+          <button class="button button-primary" id="export-project" type="button"><svg class="icon"><use href="#i-download"/></svg><span>Exportar projeto</span></button>
+        </div>
+      </header>
+
+      <main id="conteudo" tabindex="-1">
+        <!-- CAPA, INTRODUÇÃO, OBJETIVOS, CONCLUSÃO E REFERÊNCIAS -->
+        <section class="view" id="inicio" aria-labelledby="inicio-title">
+          <div class="page-intro"><div><div class="eyebrow"><span></span> BEM-VINDO AO PROJETO</div><p class="page-kicker">Visão geral</p></div><span class="project-label">PORTFÓLIO ACADÊMICO <span>✳</span></span></div>
+          <div class="hero">
+            <div class="hero-copy">
+              <div class="hero-pill"><span></span> CONHECIMENTO EM PRÁTICA</div>
+              <h1 id="inicio-title">Clínica Vida<span>+</span></h1>
+              <p class="hero-lead">Gestão que cuida.<br><em>Aprendizado que transforma.</em></p>
+              <p class="hero-description">Um projeto acadêmico que conecta tecnologia, organização e cuidado em cinco passos.</p>
+              <div class="hero-actions"><a class="button button-light" href="#sprints">Explorar o projeto <svg class="icon"><use href="#i-arrow"/></svg></a><a class="hero-link" href="#sobre-projeto">Conheça a proposta <span>↓</span></a></div>
+            </div>
+            <div class="hero-art" aria-hidden="true">
+              <svg viewBox="0 0 560 340" xmlns="http://www.w3.org/2000/svg">
+                <defs><linearGradient id="art-bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#e6f1df"/><stop offset="1" stop-color="#b8d5bb"/></linearGradient><filter id="art-shadow"><feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#103d2c" flood-opacity=".13"/></filter></defs>
+                <circle cx="277" cy="166" r="147" fill="#77ae92" opacity=".30"/><circle cx="414" cy="70" r="38" fill="#b5d7af" opacity=".34"/>
+                <path d="M57 277h427" stroke="#b5d6bc" stroke-width="2" opacity=".65"/>
+                <path d="M103 276V139c0-69 56-125 125-125h38c69 0 125 56 125 125v137" fill="url(#art-bg)" opacity=".62"/>
+                <path d="M124 276V148c0-58 47-105 105-105h36c58 0 105 47 105 105v128" fill="#d3e8d5" opacity=".58"/>
+                <rect x="173" y="57" width="194" height="223" rx="13" fill="#f8fbf4" filter="url(#art-shadow)" transform="rotate(5 270 169)"/>
+                <g transform="rotate(5 270 169)"><rect x="193" y="77" width="155" height="34" rx="7" fill="#e6f2e9"/><rect x="205" y="87" width="18" height="14" rx="4" fill="#7fb99a"/><path d="M232 88h80M232 97h52" stroke="#80a993" stroke-width="4" stroke-linecap="round" opacity=".8"/><rect x="193" y="125" width="155" height="31" rx="6" fill="#f2f7f0"/><circle cx="207" cy="140" r="7" fill="#c6e4cd"/><path d="m204 140 2 2 4-5M224 136h71M224 144h48" fill="none" stroke="#81ab93" stroke-width="3" stroke-linecap="round"/><rect x="193" y="165" width="155" height="31" rx="6" fill="#f2f7f0"/><circle cx="207" cy="180" r="7" fill="#c6e4cd"/><path d="m204 180 2 2 4-5M224 176h89M224 184h56" fill="none" stroke="#81ab93" stroke-width="3" stroke-linecap="round"/><rect x="193" y="211" width="155" height="39" rx="7" fill="#e9f3e8"/><path d="M207 235v-8m12 8v-14m12 14v-10m12 10v-19m12 19v-13m12 13v-21m12 21v-15m12 15v-24m12 24v-19" stroke="#8abca0" stroke-width="5" stroke-linecap="round"/></g>
+                <rect x="79" y="177" width="127" height="79" rx="12" fill="#ffffff" filter="url(#art-shadow)"/><circle cx="108" cy="204" r="14" fill="#e0f2e6"/><path d="M108 197v14m-7-7h14" stroke="#3b8066" stroke-width="3" stroke-linecap="round"/><path d="M130 199h48M130 208h34M95 234h93" stroke="#b8d0bf" stroke-width="5" stroke-linecap="round"/>
+                <g transform="translate(398 179)"><path d="M21 93c0-35-2-61-3-74M22 58C1 52-2 39 0 27c17 2 27 15 22 31ZM20 42C20 23 30 11 43 9c2 16-6 28-23 33ZM22 68c4-16 17-24 30-22-1 15-12 23-30 22Z" fill="#97c9a5"/><path d="M4 88h38l-5 28H10z" fill="#d8b887"/><path d="M22 90V27" stroke="#6fa681" stroke-width="2"/></g>
+                <circle cx="416" cy="108" r="26" fill="#e1f2d7"/><path d="M416 96v24m-12-12h24" stroke="#619c76" stroke-width="5" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="metric-strip" aria-label="Resumo do projeto">
+            <div><strong>05</strong><span>etapas integradas</span></div><div><strong>02</strong><span>regras de atendimento</span></div><div><strong>16</strong><span>combinações lógicas</span></div><div><strong>03</strong><span>relações «include»</span></div>
+          </div>
+
+          <div class="content-heading" id="passos"><div><div class="eyebrow"><span></span> O QUE VOCÊ VAI ENCONTRAR</div><h2>Uma jornada em cinco passos.</h2><p>Explore cada etapa e acompanhe como as partes se conectam.</p></div><span class="heading-aside">DO PLANEJAMENTO À MODELAGEM</span></div>
+          <div class="step-grid">
+            <a class="step-card" href="#sprints"><div class="step-card-top"><span class="step-icon mint"><svg class="icon"><use href="#i-board"/></svg></span><span class="step-number">01</span></div><span class="step-tag">GESTÃO ÁGIL</span><h3>Planejamento de sprints</h3><p>Organize tarefas e acompanhe a evolução em um quadro visual.</p><span class="step-link">Explorar etapa <svg class="icon"><use href="#i-arrow"/></svg></span></a>
+            <a class="step-card" href="#python"><div class="step-card-top"><span class="step-icon sand"><svg class="icon"><use href="#i-terminal"/></svg></span><span class="step-number">02</span></div><span class="step-tag">PROGRAMAÇÃO</span><h3>Cadastro em Python</h3><p>Um programa executável no terminal para cadastrar e consultar pacientes.</p><span class="step-link">Explorar etapa <svg class="icon"><use href="#i-arrow"/></svg></span></a>
+            <a class="step-card" href="#logica"><div class="step-card-top"><span class="step-icon lavender"><svg class="icon"><use href="#i-logic"/></svg></span><span class="step-number">03</span></div><span class="step-tag">LÓGICA</span><h3>Regras de atendimento</h3><p>Visualize as expressões e todas as combinações das tabelas-verdade.</p><span class="step-link">Explorar etapa <svg class="icon"><use href="#i-arrow"/></svg></span></a>
+            <a class="step-card" href="#fila"><div class="step-card-top"><span class="step-icon sky"><svg class="icon"><use href="#i-queue"/></svg></span><span class="step-number">04</span></div><span class="step-tag">ESTRUTURA DE DADOS</span><h3>Fila de pacientes</h3><p>Entenda a ordem de chegada com pseudocódigo e uma demonstração FIFO.</p><span class="step-link">Explorar etapa <svg class="icon"><use href="#i-arrow"/></svg></span></a>
+            <a class="step-card" href="#casos"><div class="step-card-top"><span class="step-icon rose"><svg class="icon"><use href="#i-diagram"/></svg></span><span class="step-number">05</span></div><span class="step-tag">MODELAGEM</span><h3>Casos de uso</h3><p>Visualize atores, responsabilidades e relações obrigatórias no sistema.</p><span class="step-link">Explorar etapa <svg class="icon"><use href="#i-arrow"/></svg></span></a>
+          </div>
+
+          <div class="overview-details" id="sobre-projeto">
+            <article class="surface editorial-card"><div class="eyebrow"><span></span> INTRODUÇÃO</div><h2>Um projeto, diferentes perspectivas.</h2><p>A Clínica Vida+ é um cenário fictício para integrar práticas de gestão de projetos e fundamentos de desenvolvimento de software. Cada etapa resolve uma parte do problema: organizar o trabalho, estruturar um cadastro e representar decisões e fluxos.</p><p>O quadro é uma demonstração local, e o programa Python funciona no terminal. Nenhuma parte desta aplicação deve receber dados pessoais ou médicos reais.</p></article>
+            <article class="surface editorial-card objectives"><div class="eyebrow"><span></span> OBJETIVOS</div><h2>O que vamos construir.</h2><ul class="check-list"><li><svg class="icon"><use href="#i-check"/></svg> Planejar e acompanhar atividades em sprints.</li><li><svg class="icon"><use href="#i-check"/></svg> Aplicar listas e dicionários em um cadastro Python.</li><li><svg class="icon"><use href="#i-check"/></svg> Validar regras por meio da lógica proposicional.</li><li><svg class="icon"><use href="#i-check"/></svg> Demonstrar a estrutura FIFO e modelar casos de uso.</li></ul></article>
+          </div>
+          <div class="surface conclusion-card"><div><div class="eyebrow"><span></span> CONCLUSÃO</div><h2>Conhecimento conectado, do início ao fim.</h2></div><p>O trabalho une planejamento, implementação e análise formal: a consulta normal é liberada em 3 combinações e a emergência em 6; a fila preserva a ordem de chegada e o diagrama explicita responsabilidades e funcionalidades obrigatórias.</p></div>
+          <div class="references"><div><div class="eyebrow"><span></span> REFERÊNCIAS E FERRAMENTAS</div><h2>Para ir além.</h2><p>Construído com HTML5, CSS3, JavaScript e Python 3; quadro armazenado no navegador e versionamento com Git.</p></div><div class="reference-links"><a href="https://docs.python.org/pt-br/3/tutorial/datastructures.html" target="_blank" rel="noopener noreferrer">Documentação Python <svg class="icon"><use href="#i-external"/></svg></a><a href="https://developer.mozilla.org/pt-BR/docs/Learn_web_development" target="_blank" rel="noopener noreferrer">MDN Web Docs <svg class="icon"><use href="#i-external"/></svg></a><a href="https://support.atlassian.com/trello/docs/creating-a-new-board/" target="_blank" rel="noopener noreferrer">Guia do Trello <svg class="icon"><use href="#i-external"/></svg></a><a href="https://scrumguides.org/scrum-guide.html" target="_blank" rel="noopener noreferrer">Scrum Guide <svg class="icon"><use href="#i-external"/></svg></a><a href="https://www.omg.org/spec/UML/2.5.1/" target="_blank" rel="noopener noreferrer">Especificação UML <svg class="icon"><use href="#i-external"/></svg></a><a href="https://git-scm.com/doc" target="_blank" rel="noopener noreferrer">Documentação Git <svg class="icon"><use href="#i-external"/></svg></a></div></div>
+          <footer class="page-footer"><span>Clínica Vida+ <b>·</b> Projeto acadêmico</span><span>Feito para aprender, pensado para cuidar.</span></footer>
+        </section>
+
+        <!-- PASSO 1 -->
+        <section class="view" id="sprints" aria-labelledby="sprints-title">
+          <div class="view-heading"><div><div class="eyebrow"><span></span> PASSO 01 <i>/</i> GESTÃO ÁGIL</div><h1 id="sprints-title">Planejamento de sprints<span class="title-dot">.</span></h1><p>Da ideia à entrega: visualize tarefas, acompanhe o progresso e registre aprendizados.</p></div><div class="view-actions"><button class="button button-outline" id="open-sprint-report" type="button"><svg class="icon"><use href="#i-file"/></svg> Relatório da sprint</button><button class="button button-primary" id="new-sprint" type="button"><svg class="icon"><use href="#i-plus"/></svg> Nova sprint</button></div></div>
+          <div class="notice notice-trello"><svg class="icon"><use href="#i-info"/></svg><p>Este quadro é uma demonstração local <strong>inspirada no Trello</strong>; não é um quadro criado na plataforma. Para usar o Trello real, <a href="https://support.atlassian.com/trello/docs/creating-a-new-board/" target="_blank" rel="noopener noreferrer">veja como criar um quadro <svg class="icon"><use href="#i-external"/></svg></a>.</p></div>
+          <div class="surface sprint-panel">
+            <div class="sprint-main"><div class="sprint-header"><div><label class="field-label" for="sprint-select">SPRINT EM FOCO</label><div class="select-shell"><select id="sprint-select" aria-label="Selecionar sprint"></select><svg class="icon"><use href="#i-chevron"/></svg></div></div><button class="button button-small button-outline" id="edit-sprint" type="button"><svg class="icon"><use href="#i-edit"/></svg> Editar sprint</button></div><p id="sprint-goal" class="sprint-goal"></p><div class="sprint-meta"><span><svg class="icon"><use href="#i-calendar"/></svg> <span id="sprint-period"></span></span><span class="meta-divider"></span><span id="sprint-duration"></span><span class="meta-divider"></span><span class="sprint-stage" id="sprint-stage"></span></div></div>
+            <div class="sprint-progress"><div class="progress-label"><span>PROGRESSO DA SPRINT</span><strong id="sprint-percent">0%</strong></div><div class="progress-track" role="progressbar" aria-label="Tarefas concluídas da sprint" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="sprint-progress"><span></span></div><div class="progress-caption"><span id="sprint-progress-caption"></span><span id="sprint-checklist-caption"></span></div></div>
+          </div>
+          <div class="board-heading"><div><h2>Quadro de tarefas <span class="small-count" id="task-total">0 tarefas</span></h2><p>Arraste os cartões ou use o seletor para mover uma tarefa.</p></div><button class="button button-primary" id="new-task" type="button"><svg class="icon"><use href="#i-plus"/></svg> Nova tarefa</button></div>
+          <div class="board-scroller"><div class="kanban-board" id="kanban-board" aria-label="Quadro de tarefas da sprint selecionada"></div></div>
+          <div class="board-bottom"><p><span class="status-dot"></span> Alterações salvas apenas neste navegador. Use dados fictícios.</p><button class="text-button" id="reset-demo" type="button"><svg class="icon"><use href="#i-refresh"/></svg> Restaurar dados demonstrativos</button></div>
+          <div id="print-all-sprints" class="print-only"></div>
+          <div class="next-step"><span>PRÓXIMA ETAPA</span><a href="#python">02 · Cadastro em Python <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+        </section>
+
+        <!-- PASSO 2 -->
+        <section class="view" id="python" aria-labelledby="python-title">
+          <div class="view-heading"><div><div class="eyebrow"><span></span> PASSO 02 <i>/</i> PROGRAMAÇÃO</div><h1 id="python-title">Cadastro em Python<span class="title-dot">.</span></h1><p>Um programa de terminal de verdade, organizado com listas e dicionários.</p></div><div class="view-actions"><button class="button button-primary" id="download-python" type="button"><svg class="icon"><use href="#i-download"/></svg> Baixar clinica_vida.py</button></div></div>
+          <div class="notice"><svg class="icon"><use href="#i-info"/></svg><p>Os registros ficam <strong>somente na memória</strong> durante a execução e são apagados ao sair. Use exclusivamente dados fictícios; o programa não é adequado a dados reais.</p></div>
+          <div class="python-layout"><div class="python-explain"><div class="eyebrow"><span></span> O PROGRAMA</div><h2>O essencial, com clareza.</h2><p>O arquivo <code>clinica_vida.py</code> usa uma lista de dicionários para guardar nome, idade e telefone de cada paciente. Seu menu permanece em execução até a opção de sair.</p><ul class="feature-list"><li><span>01</span><div><strong>Cadastro validado</strong><p>Valida nome, idade inteira de 0 a 130 e telefone com DDD.</p></div></li><li><span>02</span><div><strong>Estatísticas confiáveis</strong><p>Total, idade média e pessoas mais novas e mais velhas, inclusive empates.</p></div></li><li><span>03</span><div><strong>Busca e listagem</strong><p>Busca parcial sem diferenciar maiúsculas ou acentos e trata resultados vazios.</p></div></li></ul></div><div class="terminal-card"><div class="terminal-top"><span class="terminal-dots"><i></i><i></i><i></i></span><span>Terminal · exemplo de execução</span><span>PYTHON 3</span></div><pre><span class="terminal-prompt">$</span> python3 clinica_vida.py
+
+Use apenas dados fictícios. Os dados são apagados ao sair.
+
+<span class="terminal-muted">================================================</span>
+          CLÍNICA VIDA+ | CADASTRO
+<span class="terminal-muted">================================================</span>
+1. Cadastrar paciente
+2. Ver estatísticas
+3. Buscar paciente pelo nome
+4. Listar todos os pacientes
+5. Sair
+<span class="terminal-muted">------------------------------------------------</span>
+Escolha uma opção: <span class="terminal-cursor">▍</span></pre><div class="terminal-footer"><span class="terminal-live-dot"></span> Exemplo ilustrativo · execute o arquivo no seu terminal</div></div></div>
+          <div class="surface run-card"><div><div class="eyebrow"><span></span> COMO EXECUTAR</div><h2>Pronto para começar?</h2><p>Baixe o arquivo, abra o terminal na pasta onde ele foi salvo e execute um dos comandos abaixo.</p></div><div class="command-list"><div><span>macOS / LINUX</span><code>python3 clinica_vida.py</code></div><div><span>WINDOWS</span><code>py clinica_vida.py</code></div></div></div>
+          <div class="source-heading"><div><h2>Código-fonte completo</h2><p>O código exibido é o mesmo do arquivo Python disponibilizado.</p></div><button class="button button-outline" id="toggle-source" type="button" aria-expanded="false" aria-controls="source-panel">Visualizar código <svg class="icon"><use href="#i-chevron"/></svg></button></div><div class="source-panel" id="source-panel" hidden><pre><code id="python-source"></code></pre></div>
+          <div class="next-step"><span>PRÓXIMA ETAPA</span><a href="#logica">03 · Lógica proposicional <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+        </section>
+
+        <!-- PASSO 3 -->
+        <section class="view" id="logica" aria-labelledby="logica-title">
+          <div class="view-heading"><div><div class="eyebrow"><span></span> PASSO 03 <i>/</i> LÓGICA PROPOSICIONAL</div><h1 id="logica-title">Regras de atendimento<span class="title-dot">.</span></h1><p>Quatro condições, duas modalidades e todas as 16 combinações possíveis.</p></div></div>
+          <div class="variable-grid"><div><span class="variable-letter">A</span><p>Tem agendamento</p></div><div><span class="variable-letter">B</span><p>Documentos válidos</p></div><div><span class="variable-letter">C</span><p>Médico disponível</p></div><div><span class="variable-letter">D</span><p>Pagamentos em dia</p></div></div>
+          <div class="formula-grid"><article class="formula-card"><div class="formula-top"><span class="formula-icon"><svg class="icon"><use href="#i-calendar"/></svg></span><span class="formula-label">MODALIDADE 01</span></div><h2>Consulta normal</h2><div class="formula">(A ∧ B ∧ C) ∨ (B ∧ C ∧ D)</div><p><strong id="normal-count">3</strong> de 16 situações liberam o atendimento.</p></article><article class="formula-card emergency"><div class="formula-top"><span class="formula-icon"><svg class="icon"><use href="#i-check-circle"/></svg></span><span class="formula-label">MODALIDADE 02</span></div><h2>Emergência</h2><div class="formula">C ∧ (B ∨ D)</div><p><strong id="emergency-count">6</strong> de 16 situações liberam o atendimento.</p></article></div>
+          <div class="surface scenario-card"><div class="scenario-head"><div><div class="eyebrow"><span></span> EXPERIMENTE</div><h2>Analise uma combinação.</h2><p>Alterne as condições para ver o resultado e localizar a linha nas tabelas.</p></div><span class="scenario-note">V = verdadeiro &nbsp;·&nbsp; F = falso</span></div><div class="scenario-content"><div class="toggle-grid"><label class="toggle-field"><input type="checkbox" data-variable="a"><span class="toggle-letter">A</span><span class="toggle-label">Agendamento</span><strong data-var-value="a">F</strong></label><label class="toggle-field"><input type="checkbox" data-variable="b" checked><span class="toggle-letter">B</span><span class="toggle-label">Documentos</span><strong data-var-value="b">V</strong></label><label class="toggle-field"><input type="checkbox" data-variable="c" checked><span class="toggle-letter">C</span><span class="toggle-label">Médico</span><strong data-var-value="c">V</strong></label><label class="toggle-field"><input type="checkbox" data-variable="d"><span class="toggle-letter">D</span><span class="toggle-label">Pagamentos</span><strong data-var-value="d">F</strong></label></div><div class="scenario-outcomes"><div><span>CONSULTA NORMAL</span><strong id="scenario-normal">Não liberada</strong><small id="scenario-normal-explanation"></small></div><div><span>EMERGÊNCIA</span><strong id="scenario-emergency">Liberada</strong><small id="scenario-emergency-explanation"></small></div></div></div></div>
+          <div class="case-callout"><div class="case-mark">?</div><div><strong>O caso solicitado: A=F, B=V, C=V, D=F</strong><p><b>Consulta normal: F.</b> O primeiro termo é falso porque não há agendamento (A=F); o segundo é falso porque os pagamentos não estão em dia (D=F). <b>Emergência: V.</b> O médico está disponível (C=V) e os documentos são válidos (B=V), portanto B ∨ D é verdadeiro.</p></div></div>
+          <div class="table-heading"><div><div class="eyebrow"><span></span> TODAS AS POSSIBILIDADES</div><h2>Tabelas-verdade completas.</h2><p>A linha destacada corresponde à combinação selecionada acima.</p></div><span class="table-legend"><span></span> Combinação selecionada</span></div>
+          <div class="truth-grid"><article class="surface truth-card"><div class="truth-title"><div><span>01 / CONSULTA NORMAL</span><h3>(A ∧ B ∧ C) ∨ (B ∧ C ∧ D)</h3></div><span class="truth-badge" id="normal-table-count">3 liberadas</span></div><div class="table-scroll"><table><caption class="sr-only">Tabela-verdade da consulta normal, com 16 combinações</caption><thead><tr><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th><th scope="col">A∧B∧C</th><th scope="col">B∧C∧D</th><th scope="col">Resultado</th></tr></thead><tbody id="normal-table-body"></tbody></table></div><div class="truth-footer">16 combinações · <strong id="normal-table-footer">3 situações liberadas</strong></div></article><article class="surface truth-card"><div class="truth-title"><div><span>02 / EMERGÊNCIA</span><h3>C ∧ (B ∨ D)</h3></div><span class="truth-badge" id="emergency-table-count">6 liberadas</span></div><div class="table-scroll"><table><caption class="sr-only">Tabela-verdade de emergência, com 16 combinações</caption><thead><tr><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th><th scope="col">B∨D</th><th scope="col">Resultado</th></tr></thead><tbody id="emergency-table-body"></tbody></table></div><div class="truth-footer">16 combinações · <strong id="emergency-table-footer">6 situações liberadas</strong></div></article></div>
+          <div class="next-step"><span>PRÓXIMA ETAPA</span><a href="#fila">04 · Fila de pacientes <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+        </section>
+
+        <!-- PASSO 4 -->
+        <section class="view" id="fila" aria-labelledby="fila-title">
+          <div class="view-heading"><div><div class="eyebrow"><span></span> PASSO 04 <i>/</i> ESTRUTURA DE DADOS</div><h1 id="fila-title">Fila de pacientes<span class="title-dot">.</span></h1><p>Uma demonstração da estrutura FIFO: o primeiro a entrar é o primeiro a sair.</p></div></div>
+          <div class="fifo-intro"><div><span class="large-number">01</span><span>PRIMEIRO A ENTRAR</span></div><svg class="icon fifo-arrow"><use href="#i-arrow"/></svg><div><span class="large-number">01</span><span>PRIMEIRO A SAIR</span></div><p>Novos pacientes entram no fim da fila. O atendimento retira sempre quem está no início, mantendo a ordem dos demais.</p></div>
+          <div class="fifo-layout"><div class="surface pseudo-card"><div class="card-heading"><div><div class="eyebrow"><span></span> ALGORITMO</div><h2>Pseudocódigo</h2></div><span class="code-tag">FIFO</span></div><pre id="pseudocode" aria-label="Pseudocódigo da fila FIFO"></pre><p>São inseridos três pacientes, cada um com nome e CPF. Em seguida, o primeiro é removido e os dois restantes são mostrados na ordem original.</p></div><div class="surface queue-card"><div class="card-heading"><div><div class="eyebrow"><span></span> DEMONSTRAÇÃO</div><h2>A fila em ação</h2></div><span class="queue-count" id="queue-count">3 na fila</span></div><p class="queue-hint">Início da fila <span>→</span> Fim da fila</p><div class="queue-items" id="queue-items" aria-live="polite"></div><div class="queue-feedback" id="queue-feedback">Paciente A será atendido primeiro.</div><div class="queue-actions"><button class="button button-primary" type="button" id="queue-serve"><svg class="icon"><use href="#i-arrow"/></svg> Atender primeiro</button><button class="button button-outline" type="button" id="queue-reset"><svg class="icon"><use href="#i-refresh"/></svg> Reiniciar</button></div><p class="privacy-small">Nomes ilustrativos e CPFs propositalmente inválidos.</p></div></div>
+          <div class="notice fifo-result"><svg class="icon"><use href="#i-info"/></svg><p><strong>Exemplo esperado:</strong> entram Paciente A, Paciente B e Paciente C. Após atender A, permanecem <strong>Paciente B → Paciente C</strong>, nessa ordem.</p></div>
+          <div class="next-step"><span>PRÓXIMA ETAPA</span><a href="#casos">05 · Casos de uso <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+        </section>
+
+        <!-- PASSO 5 -->
+        <section class="view" id="casos" aria-labelledby="casos-title">
+          <div class="view-heading"><div><div class="eyebrow"><span></span> PASSO 05 <i>/</i> MODELAGEM DE SISTEMAS</div><h1 id="casos-title">Casos de uso<span class="title-dot">.</span></h1><p>Uma visão clara de quem interage com o sistema e das ações obrigatórias.</p></div><div class="view-actions"><button class="button button-outline" type="button" id="download-diagram"><svg class="icon"><use href="#i-download"/></svg> Baixar diagrama SVG</button></div></div>
+          <div class="surface diagram-card"><div class="card-heading"><div><div class="eyebrow"><span></span> DIAGRAMA UML</div><h2>Sistema de gestão de consultas</h2><p>Os atores estão fora dos limites do sistema; os casos de uso estão dentro.</p></div><span class="code-tag">UML</span></div><div class="diagram-scroll"><div class="diagram-wrap"><!-- INJETAR_DIAGRAMA --></div></div><p class="diagram-hint">Linhas contínuas representam associações. As setas tracejadas apontam do caso de uso principal para o caso incluído.</p></div>
+          <div class="uml-detail-grid"><article class="surface uml-card"><div class="eyebrow"><span></span> ATORES</div><h2>Responsabilidades</h2><div class="actor-line"><span class="actor-avatar">S</span><div><strong>Secretária</strong><p>Cadastrar paciente; agendar, confirmar e cancelar consulta.</p></div></div><div class="actor-line"><span class="actor-avatar doctor">M</span><div><strong>Médico</strong><p>Cancelar consulta e gerar receita.</p></div></div></article><article class="surface uml-card"><div class="eyebrow"><span></span> RELACIONAMENTOS</div><h2>Inclusões obrigatórias</h2><p>«include» indica que o caso incluído é executado obrigatoriamente pelo caso principal.</p><ul class="include-list"><li><strong>Agendar consulta</strong><span>«include» →</span> Verificar cadastro do paciente</li><li><strong>Confirmar consulta</strong><span>«include» →</span> Verificar cadastro do paciente</li><li><strong>Gerar receita</strong><span>«include» →</span> Imprimir receita</li></ul></article></div>
+          <div class="next-step"><span>VOCÊ CHEGOU AO FIM</span><a href="#inicio">Voltar à visão geral <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div id="print-report" class="print-only" aria-hidden="true"><h1>Clínica Vida+ — Relatório de sprint</h1><pre id="print-report-content"></pre></div>
+
+  <dialog id="sprint-dialog" class="modal" aria-labelledby="sprint-dialog-title">
+    <form id="sprint-form"><div class="modal-head"><div><div class="eyebrow"><span></span> PLANEJAMENTO</div><h2 id="sprint-dialog-title">Nova sprint</h2></div><button type="button" class="icon-button close-modal" aria-label="Fechar"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="modal-body"><div class="form-grid"><label class="form-field full">Nome da sprint <input id="sprint-name-input" required maxlength="80" placeholder="Ex.: Sprint 03 — Entrega"></label><label class="form-field full">Objetivo <textarea id="sprint-goal-input" required maxlength="400" rows="2" placeholder="O que esta sprint pretende alcançar?"></textarea></label><label class="form-field full">Status da sprint <select id="sprint-stage-input" required><option value="Planejada">Planejada</option><option value="Em andamento">Em andamento</option><option value="Concluída">Concluída</option></select></label><label class="form-field">Data de início <input id="sprint-start-input" required type="date"></label><label class="form-field">Data de término <input id="sprint-end-input" required type="date"></label><p class="form-hint full" id="sprint-date-hint">A duração inclui as datas de início e de término.</p></div><div class="form-divider"></div><div class="form-subheading"><strong>Retrospectiva e relatório</strong><span>Você pode atualizar estas anotações a qualquer momento.</span></div><div class="form-grid"><label class="form-field full">Resultados e entregas <textarea id="sprint-results-input" maxlength="800" rows="2" placeholder="Quais resultados foram alcançados?"></textarea></label><label class="form-field full">Desafios <textarea id="sprint-challenges-input" maxlength="800" rows="2" placeholder="Que dificuldades apareceram?"></textarea></label><label class="form-field full">Pontos positivos <textarea id="sprint-positives-input" maxlength="800" rows="2" placeholder="O que funcionou bem?"></textarea></label><label class="form-field full">Melhorias <textarea id="sprint-improvements-input" maxlength="800" rows="2" placeholder="O que pode melhorar na próxima sprint?"></textarea></label></div><p class="form-error" id="sprint-error" role="alert"></p></div><div class="modal-footer"><button type="button" class="button button-danger" id="delete-sprint">Excluir sprint</button><span class="footer-spacer"></span><button type="button" class="button button-outline close-modal">Cancelar</button><button type="submit" class="button button-primary">Salvar sprint</button></div></form>
+  </dialog>
+
+  <dialog id="task-dialog" class="modal" aria-labelledby="task-dialog-title">
+    <form id="task-form"><div class="modal-head"><div><div class="eyebrow"><span></span> QUADRO DE TAREFAS</div><h2 id="task-dialog-title">Nova tarefa</h2></div><button type="button" class="icon-button close-modal" aria-label="Fechar"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="modal-body"><div class="form-grid"><label class="form-field full">Título da tarefa <input id="task-title-input" required maxlength="100" placeholder="O que precisa ser feito?"></label><label class="form-field full">Descrição <textarea id="task-description-input" maxlength="800" rows="2" placeholder="Adicione contexto à tarefa."></textarea></label><label class="form-field">Sprint <select id="task-sprint-input" required></select></label><label class="form-field">Status <select id="task-status-input" required></select></label><label class="form-field">Data de entrega <input id="task-due-input" type="date"></label><label class="form-field">Categoria <input id="task-category-input" maxlength="32" placeholder="Ex.: Planejamento"></label></div><div class="form-divider"></div><div class="editor-section"><div class="form-subheading"><strong>Checklist</strong><span>Marque os itens conforme forem concluídos.</span></div><div id="checklist-editor" class="editor-list"></div><div class="inline-add"><input id="checklist-input" maxlength="120" aria-label="Novo item do checklist" placeholder="Adicionar um item ao checklist"><button type="button" id="add-checklist" class="button button-outline button-small"><svg class="icon"><use href="#i-plus"/></svg> Adicionar</button></div></div><div class="form-divider"></div><div class="editor-section"><div class="form-subheading"><strong>Comentários</strong><span>Registre observações da equipe fictícia.</span></div><div id="comments-editor" class="editor-list"></div><div class="inline-add"><input id="comment-input" maxlength="400" aria-label="Novo comentário" placeholder="Escrever um comentário"><button type="button" id="add-comment" class="button button-outline button-small"><svg class="icon"><use href="#i-plus"/></svg> Comentar</button></div></div><p class="form-hint">Itens e comentários são salvos junto com a tarefa.</p></div><div class="modal-footer"><button type="button" class="button button-danger" id="delete-task">Excluir tarefa</button><span class="footer-spacer"></span><button type="button" class="button button-outline close-modal">Cancelar</button><button type="submit" class="button button-primary">Salvar tarefa</button></div></form>
+  </dialog>
+
+  <dialog id="report-dialog" class="modal report-modal" aria-labelledby="report-dialog-title"><div class="modal-head"><div><div class="eyebrow"><span></span> RETROSPECTIVA</div><h2 id="report-dialog-title">Relatório da sprint</h2><p>O relatório reúne o estado atual das tarefas e as anotações da sprint.</p></div><button type="button" class="icon-button close-modal" aria-label="Fechar"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="modal-body"><pre id="report-output" class="report-output"></pre></div><div class="modal-footer"><button type="button" class="button button-outline" id="print-sprint-report"><svg class="icon"><use href="#i-print"/></svg> Imprimir relatório</button><span class="footer-spacer"></span><button type="button" class="button button-primary" id="download-sprint-report"><svg class="icon"><use href="#i-download"/></svg> Baixar relatório .txt</button></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>window.PYTHON_SOURCE = __FONTE_PYTHON__;</script>
+  <script>
+/* INJETAR_CORE */
+  </script>
+  <script>
+/* INJETAR_APP */
+  </script>
+</body>
+</html>

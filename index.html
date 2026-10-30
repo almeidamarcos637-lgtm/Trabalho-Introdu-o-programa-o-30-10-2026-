@@ -1,0 +1,994 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1d5645">
+  <meta name="description" content="Projeto acadêmico Clínica Vida+: planejamento ágil, Python, lógica, fila FIFO e casos de uso.">
+  <title>Clínica Vida+ | Projeto acadêmico</title>
+  <style>
+@charset "UTF-8";
+:root{--ink:#20352e;--muted:#778b81;--muted-dark:#586e63;--green:#27785e;--green-dark:#205b49;--green-deep:#184d3d;--mint:#e9f3ec;--line:#e3ebe5;--bg:#f6f8f5;--white:#fff;--serif:Georgia,'Times New Roman',serif;--sans:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--shadow:0 8px 30px rgba(39,69,51,.035)}
+*{box-sizing:border-box}[hidden]{display:none!important}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button,a{ -webkit-tap-highlight-color:transparent}button{cursor:pointer}a{color:inherit;text-decoration:none}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #89c8a8;outline-offset:3px}h1,h2,h3,p{margin-top:0}h1,h2,h3{letter-spacing:-.025em}h2{font-size:23px;line-height:1.25}p{color:var(--muted-dark)}.icon-library{position:absolute;width:0;height:0;overflow:hidden}.icon{width:18px;height:18px;display:inline-block;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}.skip-link{position:fixed;top:-100px;left:12px;background:#fff;padding:10px 14px;z-index:1000;border-radius:8px}.skip-link:focus{top:10px}
+.app-shell{min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:252px;background:#fff;border-right:1px solid #e8eee9;padding:30px 18px 19px;display:flex;flex-direction:column;z-index:25}.brand{display:flex;align-items:center;gap:11px;padding:0 8px 30px}.brand-mark{position:relative;width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:var(--green);flex:none}.brand-mark span{position:absolute;background:#fff;border-radius:4px}.brand-mark span:first-child{height:19px;width:5px}.brand-mark span:last-child{height:5px;width:19px}.brand-copy{display:flex;flex-direction:column;line-height:1.1}.brand-copy strong{font-size:18px;letter-spacing:-.045em;color:#244237}.brand-copy strong span{color:#4b9874}.brand-copy small{margin-top:6px;color:#93a59b;font-size:8px;letter-spacing:.16em;font-weight:800}.sidebar-label,.nav-group-label{font-size:9px;font-weight:800;letter-spacing:.13em;color:#a3b1a7}.sidebar-label{padding:0 12px;margin:0 0 10px}.nav-group-label{padding:0 12px;margin:23px 0 10px}.side-nav{display:flex;flex-direction:column;gap:3px}.nav-link{height:43px;padding:0 12px;display:flex;align-items:center;gap:11px;color:#6b8075;border-radius:8px;font-size:12.5px;font-weight:600;white-space:nowrap}.nav-link .icon{width:17px;height:17px;stroke-width:1.65}.nav-link span{flex:1}.nav-link small{font-size:10px;color:#adbbb1;font-weight:600}.nav-link:hover{background:#f5f8f5;color:var(--green-dark)}.nav-link.active{background:#eaf4ed;color:#247158;font-weight:700}.nav-link.active small{color:#609b7d}.sidebar-note{margin:auto 4px 18px;background:#f1f6ef;border:1px solid #e9f1e8;border-radius:11px;padding:13px;display:flex;gap:9px}.sidebar-note-icon{width:25px;height:25px;border-radius:7px;background:#dcece0;color:#4e8c67;display:grid;place-items:center;flex:none}.sidebar-note-icon .icon{width:15px;height:15px}.sidebar-note strong{display:block;font-size:11px;color:#385c49;line-height:1.4}.sidebar-note p{margin:4px 0 0;font-size:10px;line-height:1.45;color:#829588}.sidebar-footer{border-top:1px solid #eef2ef;padding:15px 9px 0;color:#8da093;font-size:10px}.status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#5ab487;margin-right:6px;vertical-align:1px;box-shadow:0 0 0 3px #e6f4ea}
+.shell-content{margin-left:252px;min-width:0}.topbar{height:72px;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:0 39px;background:rgba(255,255,255,.91);border-bottom:1px solid #ebf0eb;position:sticky;top:0;z-index:20;backdrop-filter:blur(12px)}.breadcrumb{display:flex;align-items:center;gap:10px;white-space:nowrap;min-width:0}.breadcrumb span:first-child{font-size:9px;font-weight:800;letter-spacing:.13em;color:#9aaba0}.breadcrumb strong{font-size:12px;color:#5b7064;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.crumb-divider{color:#c5d0c7}.top-actions,.view-actions,.hero-actions{display:flex;align-items:center;gap:10px}.top-actions{flex-shrink:0}.demo-pill{font-size:11px;color:#7d9184;margin-right:10px;white-space:nowrap}.button{display:inline-flex;justify-content:center;align-items:center;gap:8px;min-height:41px;border:1px solid transparent;border-radius:7px;padding:0 15px;font-size:12px;font-weight:700;line-height:1.1;white-space:nowrap;transition:background .18s,border-color .18s,transform .18s,color .18s}.button .icon{width:16px;height:16px}.button:hover{transform:translateY(-1px)}.button-primary{background:#287a5e;color:#fff;border-color:#287a5e}.button-primary:hover{background:#1d624b}.button-outline{background:#fff;color:#4b6657;border-color:#dce8de}.button-outline:hover{border-color:#a9c9b4;background:#f7fbf7}.button-quiet{color:#667d70;background:transparent}.button-quiet:hover{background:#f1f6f1}.button-light{background:#fff;color:#225a46;border-color:#fff;padding:0 17px}.button-light:hover{background:#e8f5e9}.button-small{min-height:35px;font-size:11px;padding:0 11px}.button-danger{background:#fff;color:#ab514d;border:1px solid #edd9d5}.button-danger:hover{background:#fff7f6}.icon-button{width:36px;height:36px;display:grid;place-items:center;background:transparent;border:0;border-radius:7px;color:#8a9a8f}.icon-button:hover{background:#eef5ef;color:#375c49}.text-button{border:0;background:transparent;padding:2px;color:#719281;font-size:11px;font-weight:700}.text-button:hover{color:#256b50}.text-button .icon{width:13px;height:13px;margin-right:4px}
+main{max-width:1570px;margin:0 auto;padding:34px 40px 55px}.js-ready .view{display:none}.js-ready .view.active{display:block}.view{min-width:0}.page-intro{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}.page-kicker{font-weight:650;font-size:12px;color:#73897b;margin:8px 0 0}.eyebrow{font-size:9px;font-weight:800;letter-spacing:.14em;color:#6f9980;line-height:1.2;text-transform:uppercase}.eyebrow>span{display:inline-block;width:7px;height:7px;background:#69a881;border-radius:50%;margin-right:5px;vertical-align:1px}.eyebrow i{font-style:normal;color:#c2d2c5;padding:0 5px}.project-label,.heading-aside{font-size:9px;letter-spacing:.13em;font-weight:800;color:#9aaba0}.project-label span{font-size:15px;color:#71ab88;margin-left:6px}
+.hero{min-height:320px;overflow:hidden;display:grid;grid-template-columns:1fr .95fr;border-radius:13px;background:linear-gradient(115deg,#1b5543,#267157);color:#fff;position:relative}.hero:after{content:'';position:absolute;bottom:-140px;left:36%;width:400px;height:400px;border:1px solid rgba(198,230,199,.11);border-radius:50%;pointer-events:none}.hero-copy{padding:37px 0 35px 40px;position:relative;z-index:2;max-width:540px}.hero-pill{display:inline-flex;align-items:center;gap:7px;color:#b9e0c6;background:rgba(222,248,224,.10);border:1px solid rgba(214,241,215,.18);padding:6px 10px;border-radius:4px;font-size:8px;font-weight:800;letter-spacing:.14em}.hero-pill span{width:6px;height:6px;border-radius:50%;background:#b9e4bf}.hero h1{font-size:clamp(35px,3.3vw,46px);line-height:1.05;letter-spacing:-.055em;margin:22px 0 13px;color:#fff}.hero h1 span{color:#bde4b9}.hero-lead{font-family:var(--serif);font-size:24px;line-height:1.26;color:#eff8ef;letter-spacing:-.02em;margin:0 0 12px}.hero-lead em{font-weight:normal;color:#c4e5c9}.hero-description{font-size:12.5px;color:#c1dbc8;max-width:365px;line-height:1.65;margin:0 0 20px}.hero-actions{gap:19px}.hero-link{font-size:11px;font-weight:700;color:#d3ead5}.hero-link span{margin-left:4px}.hero-link:hover{text-decoration:underline}.hero-art{position:relative;align-self:end;height:100%;display:flex;justify-content:center;align-items:flex-end}.hero-art svg{width:100%;max-width:540px;height:100%;max-height:338px;overflow:visible}.metric-strip{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border:1px solid var(--line);border-radius:10px;margin:15px 0 0;padding:16px 0;box-shadow:var(--shadow)}.metric-strip>div{display:flex;align-items:center;gap:11px;padding:0 25px;border-right:1px solid #edf1ed}.metric-strip>div:last-child{border:0}.metric-strip strong{font-family:var(--serif);font-size:26px;line-height:1;font-weight:400;color:#346b50}.metric-strip span{font-size:10.5px;font-weight:650;color:#7e9185}.content-heading,.table-heading{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:39px 0 16px}.content-heading h2,.table-heading h2{font-family:var(--serif);font-weight:400;font-size:27px;letter-spacing:-.03em;margin:9px 0 5px}.content-heading p,.table-heading p{font-size:12px;margin:0;color:#87998d}.heading-aside{margin-bottom:4px}.step-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.step-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 15px 14px;min-height:206px;display:flex;flex-direction:column;box-shadow:var(--shadow);transition:transform .18s,border-color .18s,box-shadow .18s}.step-card:hover{transform:translateY(-3px);border-color:#b8d4c1;box-shadow:0 10px 26px rgba(39,69,51,.08)}.step-card-top{display:flex;justify-content:space-between;align-items:start;margin-bottom:19px}.step-icon{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;color:#4b8765}.step-icon .icon{width:17px;height:17px}.mint{background:#e7f3e8}.sand{background:#faf0dd;color:#b18748}.lavender{background:#f1eefa;color:#8277b1}.sky{background:#e8f4f5;color:#6798a0}.rose{background:#f9eeee;color:#b9867e}.step-number{font-family:var(--serif);color:#c5d2c7;font-size:17px}.step-tag{color:#8da696;font-size:8px;font-weight:800;letter-spacing:.1em}.step-card h3{font-size:13px;margin:6px 0 7px}.step-card p{font-size:10.5px;line-height:1.55;color:#8b9b90;margin:0 0 15px}.step-link{display:flex;align-items:center;gap:7px;margin-top:auto;font-size:10px;font-weight:750;color:#438b67}.step-link .icon{width:13px;height:13px}.surface{background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow)}.overview-details{display:grid;grid-template-columns:1.15fr 1fr;gap:14px;margin-top:38px}.editorial-card{padding:25px 27px}.editorial-card h2,.conclusion-card h2,.references h2{font-family:var(--serif);font-size:25px;font-weight:400;margin:11px 0 13px}.editorial-card p{font-size:12px;line-height:1.8;margin-bottom:10px}.editorial-card p:last-child{margin-bottom:0}.check-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}.check-list li{display:flex;gap:9px;align-items:start;color:#637b6b;font-size:12px}.check-list .icon{width:17px;height:17px;padding:3px;background:#eaf5eb;color:#428861;border-radius:50%;margin-top:1px}.conclusion-card{display:grid;grid-template-columns:.9fr 1.1fr;gap:35px;padding:27px;margin-top:14px;background:#eef5ed}.conclusion-card h2{margin-bottom:0}.conclusion-card p{margin:0;align-self:center;font-size:12px;line-height:1.8}.references{display:grid;grid-template-columns:1fr 1.2fr;gap:40px;margin:40px 0 30px}.references h2{margin-bottom:8px}.references p{font-size:11.5px;max-width:390px}.reference-links{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.reference-links a{display:flex;justify-content:space-between;gap:8px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:7px;padding:11px 12px;color:#5b7866;font-size:11px;font-weight:650}.reference-links a:hover{border-color:#a9c9b4}.reference-links .icon{width:13px;height:13px}.page-footer{border-top:1px solid #e1eae2;padding-top:20px;display:flex;justify-content:space-between;gap:12px;color:#9aaa9f;font-size:10px}.page-footer b{color:#7cac89}
+.view-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin:5px 0 24px}.view-heading h1{font-family:var(--serif);font-weight:400;font-size:clamp(31px,3.1vw,42px);line-height:1.15;margin:11px 0 8px;color:#263e32}.title-dot{color:#73ac81}.view-heading p{font-size:12.5px;color:#819388;margin:0}.notice{display:flex;align-items:flex-start;gap:10px;padding:13px 16px;background:#edf5ed;border:1px solid #deecdf;border-radius:8px;color:#54866a;margin-bottom:20px}.notice>.icon{width:17px;height:17px;margin-top:1px}.notice p{font-size:11.5px;color:#688372;line-height:1.6;margin:0}.notice a{font-weight:750;color:#2b7657;text-decoration:underline;text-underline-offset:2px}.notice a .icon{width:11px;height:11px}.sprint-panel{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);padding:20px 22px;gap:28px}.sprint-panel>*{min-width:0}.sprint-main{border-right:1px solid #e9f0e9;padding-right:25px}.sprint-header{display:flex;justify-content:space-between;align-items:center;gap:15px}.sprint-header>div{min-width:0;max-width:100%}.field-label{display:block;font-size:9px;font-weight:800;color:#8ea99a;letter-spacing:.13em}.select-shell{display:flex;align-items:center;position:relative}.select-shell select{border:0;background:transparent;appearance:none;color:#2d4838;font-size:17px;font-weight:750;width:100%;min-width:0;max-width:100%;text-overflow:ellipsis;padding:4px 25px 4px 0;cursor:pointer}.select-shell>.icon{position:absolute;right:3px;width:15px;height:15px;pointer-events:none;color:#7f9c8a}.sprint-goal{font-size:11.5px;margin:9px 0 14px;color:#789083}.sprint-meta{display:flex;align-items:center;flex-wrap:wrap;gap:11px;color:#789083;font-size:10.5px;font-weight:600}.sprint-meta>span:first-child{display:flex;gap:6px;align-items:center}.sprint-meta .icon{width:14px;height:14px;color:#84aa90}.meta-divider{height:12px;border-left:1px solid #dce7dd}.sprint-stage{padding:3px 7px;background:#edf7ed;border-radius:4px;color:#608f70;font-size:9px;font-weight:800}.sprint-progress{align-self:center}.progress-label{display:flex;align-items:center;justify-content:space-between;color:#8ca497;font-size:9px;font-weight:800;letter-spacing:.1em}.progress-label strong{font-size:22px;letter-spacing:-.03em;color:#3b7b59}.progress-track{height:7px;border-radius:20px;background:#eaf1e9;overflow:hidden;margin:10px 0}.progress-track span{display:block;height:100%;background:#63ad79;width:0;border-radius:inherit;transition:width .2s}.progress-caption{display:flex;justify-content:space-between;gap:8px;color:#98ab9d;font-size:10px}.board-heading{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:30px 0 15px}.board-heading h2{font-size:17px;margin:0 0 3px}.board-heading p{color:#91a398;font-size:11px;margin:0}.small-count{display:inline-block;background:#ebf2eb;color:#86a190;border-radius:20px;padding:3px 8px;font-size:9px;font-family:var(--sans);font-weight:700;vertical-align:2px;margin-left:6px;letter-spacing:0}.board-scroller{overflow-x:auto;padding-bottom:8px}.kanban-board{display:grid;grid-template-columns:repeat(4,minmax(230px,1fr));gap:12px;min-width:970px;align-items:start}.board-column{background:#eef3ee;border:1px solid #e7eee7;border-radius:9px;padding:10px;min-height:216px;transition:background .15s,border-color .15s}.board-column.drag-over{background:#ddefe0;border-color:#8bbd99}.column-heading{display:flex;align-items:center;gap:8px;padding:4px 3px 12px}.column-heading .column-dot{width:7px;height:7px;border-radius:50%;background:#a1b0a7}.column-heading[data-status="Sprint Atual"] .column-dot{background:#dab96e}.column-heading[data-status="Em Progresso"] .column-dot{background:#8aaad0}.column-heading[data-status="Concluído"] .column-dot{background:#79b992}.column-heading strong{font-size:11px;color:#617669;flex:1}.column-count{font-size:10px;color:#9bad9e;background:#e3ebe4;min-width:21px;height:21px;display:grid;place-items:center;border-radius:5px}.task-list{display:grid;gap:9px}.task-card{background:#fff;border:1px solid #e3ebe3;border-radius:7px;padding:12px;box-shadow:0 3px 9px rgba(35,65,46,.025)}.task-card[draggable="true"]{cursor:grab}.task-card.dragging{opacity:.5}.task-topline{display:flex;align-items:center;justify-content:space-between;gap:6px}.task-category{font-size:8px;color:#619575;font-weight:800;letter-spacing:.07em;text-transform:uppercase;background:#eef7ef;padding:4px 6px;border-radius:4px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.task-edit{color:#9aada0;display:inline-grid;place-items:center;border:0;background:transparent;border-radius:4px;width:26px;height:26px}.task-edit:hover{background:#f1f7f1;color:#2f795a}.task-edit .icon{width:14px;height:14px}.task-title{display:block;border:0;background:none;color:#354b3d;padding:0;text-align:left;font-size:12px;line-height:1.4;font-weight:750;margin:10px 0 6px}.task-title:hover{color:#24765a;text-decoration:underline}.task-description{font-size:10.5px;color:#9aaba0;line-height:1.5;margin:0 0 12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.task-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#9aaba0;font-size:10px}.task-meta span{display:inline-flex;align-items:center;gap:4px}.task-meta .icon{width:12px;height:12px}.task-move-label{display:block;color:#9aaca0;font-size:9px;margin-top:11px}.task-move-label select{display:block;max-width:100%;width:100%;border:1px solid #e6eee7;color:#6a8272;border-radius:5px;background:#fbfdfb;padding:5px 6px;font-size:10px;margin-top:3px;cursor:pointer}.empty-column{padding:22px 7px 26px;text-align:center;color:#a4b5a8;font-size:10.5px}.board-bottom{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 2px 0}.board-bottom p{font-size:10px;color:#91a59a;margin:0}.board-bottom .status-dot{width:6px;height:6px}.next-step{margin-top:46px;padding:17px 0 0;border-top:1px solid #e1ebe1;display:flex;justify-content:space-between;align-items:center;gap:10px}.next-step>span{font-size:9px;letter-spacing:.13em;font-weight:800;color:#a4b5a9}.next-step a{font-size:11px;font-weight:750;color:#4a8b66;display:flex;align-items:center;gap:9px}.next-step .icon{width:14px;height:14px}
+.python-layout{display:grid;grid-template-columns:.9fr 1.1fr;gap:34px;align-items:center;margin:30px 0 24px}.python-explain h2,.run-card h2,.pseudo-card h2,.queue-card h2,.diagram-card h2,.uml-card h2,.scenario-card h2{font-family:var(--serif);font-size:25px;font-weight:400;margin:10px 0 10px}.python-explain>p{font-size:12px;line-height:1.8;max-width:500px}.python-explain code{color:#2a7457;background:#edf6ed;padding:2px 4px;border-radius:3px}.feature-list{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:17px}.feature-list li{display:flex;gap:13px}.feature-list li>span{font-family:var(--serif);font-size:18px;color:#a0c9a9}.feature-list strong{font-size:12px;color:#455c4d}.feature-list p{font-size:11px;color:#96a69a;margin:4px 0 0;line-height:1.5}.terminal-card{overflow:hidden;background:#1e3930;color:#e3eee4;border-radius:10px;box-shadow:0 14px 28px rgba(30,57,48,.12)}.terminal-top{height:43px;background:#27483a;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 16px;color:#adc7b2;font-size:10px}.terminal-top>span:last-child{font-size:9px;letter-spacing:.1em}.terminal-dots{display:flex;gap:5px}.terminal-dots i{width:6px;height:6px;border-radius:50%;background:#8eb29b}.terminal-dots i:nth-child(2){background:#b4be88}.terminal-dots i:nth-child(3){background:#bb9781}.terminal-card pre{padding:17px 20px;margin:0;font:11px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace;overflow-x:auto;white-space:pre}.terminal-prompt,.terminal-cursor{color:#a6d99c}.terminal-muted{color:#718f79}.terminal-footer{border-top:1px solid #35564a;padding:11px 17px;font-size:10px;color:#9dbba5}.terminal-live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#91c69a;margin-right:5px}.run-card{display:grid;grid-template-columns:1fr 1.1fr;gap:30px;align-items:center;padding:24px;margin:20px 0}.run-card h2{margin-bottom:8px}.run-card p{font-size:11.5px;line-height:1.7;margin:0}.command-list{display:grid;gap:8px}.command-list>div{background:#f6f9f5;border:1px solid #e9efe8;border-radius:6px;padding:9px 12px;display:flex;align-items:center;gap:15px}.command-list span{min-width:92px;font-size:8px;letter-spacing:.1em;color:#8aa090;font-weight:800}.command-list code{font-size:11px;color:#48715b;overflow-wrap:anywhere}.source-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:30px 0 13px}.source-heading h2{font-size:17px;margin:0 0 4px}.source-heading p{font-size:11px;color:#91a398;margin:0}.source-panel{border-radius:8px;background:#253d33;color:#e3eee4;overflow:auto}.source-panel pre{font:11px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;margin:0;padding:20px;max-height:580px;overflow:auto;white-space:pre}.source-panel[hidden]{display:none}
+.variable-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:15px}.variable-grid>div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:13px;display:flex;align-items:center;gap:10px;min-width:0}.variable-letter,.toggle-letter{width:30px;height:30px;display:grid;place-items:center;border-radius:7px;background:#eaf4eb;color:#508c67;font-size:12px;font-weight:800;flex:none}.variable-grid p{font-size:11px;font-weight:650;color:#687e70;margin:0;min-width:0;overflow-wrap:anywhere}.formula-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.formula-card{border:1px solid #dbeadf;background:#f0f7ef;border-radius:9px;padding:18px 20px}.formula-card.emergency{background:#f7f6ef;border-color:#eeecdf}.formula-top{display:flex;align-items:center;justify-content:space-between}.formula-icon{width:31px;height:31px;display:grid;place-items:center;border-radius:8px;background:#dfeee0;color:#60966f}.emergency .formula-icon{background:#f0eddc;color:#ae9e61}.formula-icon .icon{width:16px;height:16px}.formula-label{font-size:8px;letter-spacing:.12em;color:#93a89a;font-weight:800}.formula-card h2{font-size:13px;margin:13px 0 7px}.formula{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:clamp(13px,1.25vw,17px);font-weight:700;letter-spacing:-.04em;color:#3e6b50}.formula-card p{font-size:11px;color:#88a090;margin:12px 0 0}.formula-card p strong{color:#3f8060}.scenario-card{padding:21px;margin-top:22px}.scenario-head,.card-heading{display:flex;align-items:start;justify-content:space-between;gap:15px}.scenario-head h2{margin-bottom:4px}.scenario-head p,.card-heading p{font-size:11px;color:#93a598;margin:0}.scenario-note{font-size:10px;color:#9baea1;white-space:nowrap}.scenario-content{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;margin-top:20px}.toggle-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.toggle-field{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:#f7faf6;border:1px solid #e8eee7;border-radius:7px;padding:11px 5px;cursor:pointer}.toggle-field:has(input:checked){background:#edf7ed;border-color:#cfe5d3}.toggle-field input{position:absolute;width:1px;height:1px;opacity:0}.toggle-field:has(input:focus-visible){outline:3px solid #89c8a8;outline-offset:3px}.toggle-field .toggle-letter{width:25px;height:25px;font-size:10px}.toggle-label{font-size:9px;color:#84998a}.toggle-field strong{font-size:12px;color:#6d8d77}.scenario-outcomes{display:grid;gap:8px}.scenario-outcomes>div{background:#f8faf7;border:1px solid #e9efe8;border-radius:7px;padding:9px 11px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px}.scenario-outcomes span{font-size:9px;font-weight:800;letter-spacing:.08em;color:#8da397}.scenario-outcomes strong{font-size:11px;color:#aa6e60}.scenario-outcomes strong.positive{color:#42865d}.scenario-outcomes small{grid-column:1/-1;font-size:10px;color:#9aaa9e}.case-callout{display:flex;gap:12px;background:#fffbf1;border:1px solid #f1ead4;border-radius:8px;padding:14px 16px;margin-top:14px}.case-mark{width:25px;height:25px;display:grid;place-items:center;border-radius:50%;background:#f4ebd0;color:#aa9153;font-family:var(--serif);font-size:16px;flex:none}.case-callout strong{font-size:11px;color:#806e41}.case-callout p{margin:5px 0 0;font-size:11px;line-height:1.7;color:#958761}.table-legend{display:flex;align-items:center;gap:7px;font-size:10px;color:#94a89a;white-space:nowrap}.table-legend span{width:9px;height:9px;border-radius:2px;background:#dceede}.truth-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.truth-card{overflow:hidden}.truth-title{padding:16px 16px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}.truth-title>div>span{font-size:8px;font-weight:800;letter-spacing:.11em;color:#98aa9d}.truth-title h3{font-size:12px;color:#4d6b57;margin:5px 0 0}.truth-badge,.code-tag{border-radius:5px;background:#edf7ed;color:#6a9c77;font-size:9px;font-weight:800;padding:5px 7px;white-space:nowrap}.table-scroll{overflow-x:auto}.truth-card table{width:100%;border-collapse:collapse;text-align:center;font-size:10.5px;color:#788f7d}.truth-card th{font-size:9px;color:#90a597;background:#f7faf6;padding:8px 5px;font-weight:750;white-space:nowrap}.truth-card td{border-top:1px solid #f0f4ef;padding:6px 5px}.truth-card tbody tr.highlighted{background:#ebf6eb;color:#3d7352;font-weight:750}.truth-card td:last-child{font-weight:800}.truth-card td.result-true{color:#36885a}.truth-card td.result-false{color:#a4b4a7}.truth-footer{padding:10px 15px;border-top:1px solid #edf2ec;font-size:10px;color:#a2b3a7}.truth-footer strong{color:#78a68a}
+.fifo-intro{display:grid;grid-template-columns:auto 40px auto 1fr;align-items:center;gap:20px;padding:21px 25px;background:#eaf4e9;border:1px solid #dcebdd;border-radius:9px;margin-bottom:20px}.fifo-intro>div{display:flex;align-items:center;gap:10px}.large-number{font-family:var(--serif);font-size:34px;color:#70a77c;line-height:1}.fifo-intro>div span:last-child{font-size:9px;color:#7f9e87;font-weight:800;letter-spacing:.1em;max-width:75px}.fifo-arrow{color:#a6c9a9}.fifo-intro p{font-size:11px;color:#789281;margin:0;border-left:1px solid #d5e7d6;padding-left:24px;line-height:1.7}.fifo-layout{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.fifo-layout>*{min-width:0}.pseudo-card,.queue-card,.diagram-card,.uml-card{padding:21px}.pseudo-card h2,.queue-card h2{margin-bottom:0}.pseudo-card pre{padding:18px;margin:18px 0 13px;background:#263e33;color:#dae9d9;border-radius:7px;font:11px/1.75 ui-monospace,SFMono-Regular,Consolas,monospace;overflow:auto}.pseudo-card>p{font-size:11px;line-height:1.7;margin:0}.queue-count{font-size:10px;color:#75a687;background:#edf7ed;border-radius:5px;padding:5px 7px;font-weight:750}.queue-hint{margin:22px 0 10px;font-size:10px;font-weight:700;color:#9caf9f}.queue-hint span{color:#73a984;margin:0 5px}.queue-items{display:grid;gap:8px}.queue-item{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #e8efe8;border-radius:7px;background:#fbfdfb}.queue-index{width:28px;height:28px;display:grid;place-items:center;border-radius:7px;background:#edf5eb;color:#7da386;font-family:var(--serif);font-size:16px}.queue-person{flex:1}.queue-person strong{display:block;font-size:11px;color:#4e6857}.queue-person span{font-size:10px;color:#9aab9e}.queue-first{font-size:8px;color:#5b9a70;font-weight:800;background:#e9f5e9;padding:4px 6px;border-radius:4px;letter-spacing:.05em}.queue-empty{padding:22px 0;text-align:center;color:#9eb0a2;font-size:11px}.queue-feedback{font-size:11px;color:#5d8870;background:#f2f8f0;border-radius:6px;padding:10px 12px;margin:12px 0}.queue-actions{display:flex;gap:8px;flex-wrap:wrap}.queue-actions button:disabled{opacity:.5;cursor:not-allowed;transform:none}.privacy-small{font-size:10px;color:#9bad9f;margin:12px 0 0}.fifo-result{margin:15px 0 0}
+.diagram-card .card-heading p{margin-top:5px}.diagram-scroll{overflow-x:auto;margin-top:13px}.diagram-wrap{min-width:700px}.diagram-wrap svg{width:100%;height:auto;display:block}.diagram-hint{font-size:10.5px;color:#90a397;margin:3px 0 0}.uml-detail-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:14px;margin-top:15px}.uml-card h2{margin:10px 0 16px}.uml-card>p{font-size:11px;margin-bottom:14px}.actor-line{display:flex;align-items:center;gap:10px;margin:12px 0}.actor-avatar{width:33px;height:33px;display:grid;place-items:center;background:#eaf5e9;color:#659977;border-radius:50%;font-family:var(--serif);font-size:16px;flex:none}.actor-avatar.doctor{background:#f2f1e5;color:#9b9667}.actor-line strong{font-size:11px}.actor-line p{font-size:10.5px;color:#8fa195;margin:2px 0 0}.include-list{list-style:none;margin:0;padding:0;display:grid;gap:9px}.include-list li{font-size:10.5px;color:#83978a;line-height:1.6;padding:8px 9px;background:#f8fbf7;border-radius:5px}.include-list strong{color:#577362}.include-list span{color:#7da98a;margin:0 4px}
+.modal{width:min(660px,calc(100% - 28px));max-height:min(90vh,930px);padding:0;border:1px solid #e1ebe1;border-radius:12px;box-shadow:0 25px 80px rgba(19,49,30,.22);color:var(--ink);overflow:auto}.modal::backdrop{background:rgba(19,39,28,.54)}.modal-head{display:flex;justify-content:space-between;gap:15px;align-items:start;padding:22px 23px 17px;border-bottom:1px solid #edf2ed}.modal-head h2{font-family:var(--serif);font-size:25px;font-weight:400;margin:8px 0 0}.modal-head p{font-size:11px;margin:6px 0 0}.modal-body{padding:20px 23px}.modal-footer{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:14px 23px 18px;border-top:1px solid #edf2ed}.footer-spacer{flex:1}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.form-field{display:flex;flex-direction:column;gap:6px;color:#577060;font-size:11px;font-weight:750}.form-field.full,.form-hint.full{grid-column:1/-1}.form-field input,.form-field textarea,.form-field select,.inline-add input{width:100%;min-width:0;border:1px solid #dce8de;background:#fbfdfb;color:#324a3b;border-radius:6px;padding:9px 10px;font-size:12px;font-weight:400;line-height:1.4}.form-field textarea{resize:vertical}.form-field input::placeholder,.form-field textarea::placeholder,.inline-add input::placeholder{color:#b1beb3}.form-field input:focus,.form-field textarea:focus,.form-field select:focus,.inline-add input:focus{border-color:#86bc96;outline:2px solid #d9eddd}.form-hint{font-size:10px;color:#99aa9d;margin:0}.form-divider{height:1px;background:#edf2ed;margin:20px 0}.form-subheading{display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:12px}.form-subheading strong{font-size:12px;color:#4a6252}.form-subheading span{font-size:10px;color:#a1b1a5}.form-error{font-size:11px;color:#b04e42;margin:10px 0 0}.form-error:empty{display:none}.inline-add{display:flex;gap:7px;margin-top:9px}.inline-add .button{flex:none}.editor-list{display:grid;gap:7px}.editor-empty{font-size:10.5px;color:#a3b4a7;margin:0}.editor-item{display:flex;align-items:start;gap:8px;padding:8px 9px;border:1px solid #edf2ed;border-radius:6px;background:#fbfdfb;font-size:11px;color:#66806e}.editor-item input[type="checkbox"]{margin:2px 1px 0;accent-color:#4a9b6a}.editor-item .editor-content{flex:1;min-width:0;overflow-wrap:anywhere}.editor-item small{display:block;color:#a8b8aa;font-size:9px;margin-top:3px}.editor-item .remove-item{background:transparent;border:0;color:#a4b6a8;padding:0;line-height:0}.editor-item .remove-item:hover{color:#b3554c}.editor-item .remove-item .icon{width:14px;height:14px}.report-modal{width:min(760px,calc(100% - 28px))}.report-output{white-space:pre-wrap;overflow-wrap:anywhere;margin:0;padding:20px;background:#f8fbf7;border:1px solid #e8efe7;border-radius:7px;color:#506b59;font:11.5px/1.75 ui-monospace,SFMono-Regular,Consolas,monospace}.toast{position:fixed;bottom:22px;right:22px;z-index:100;background:#244f3d;color:#fff;padding:11px 16px;border-radius:7px;font-size:12px;box-shadow:0 8px 25px rgba(0,0,0,.16);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s,transform .2s;max-width:min(380px,calc(100vw - 44px))}.toast.visible{opacity:1;transform:translateY(0)}.print-only{display:none}
+@media(max-width:1300px){.step-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.step-card{min-height:186px}.hero-copy{padding-left:32px}.metric-strip>div{padding:0 17px}.topbar{padding-left:30px;padding-right:30px}main{padding-left:30px;padding-right:30px}}
+@media(max-width:1000px){.sidebar{position:relative;width:100%;height:auto;padding:14px 20px 0;border-right:0;border-bottom:1px solid #e5ece6}.brand{padding:0 0 12px}.brand-mark{width:34px;height:34px}.side-nav{display:flex;flex-direction:row;gap:4px;overflow-x:auto;margin:0 -20px;padding:0 20px 8px;scrollbar-width:thin}.nav-link{height:38px;padding:0 10px;flex:none}.nav-link span{flex:none}.nav-link small,.sidebar-label,.nav-group-label,.sidebar-note,.sidebar-footer{display:none}.shell-content{margin-left:0}.topbar{position:relative;height:61px}.demo-pill{display:none}.python-layout{gap:22px}.kanban-board{min-width:970px}}
+@media(max-width:720px){main{padding:26px 18px 42px}.topbar{padding:0 18px}.breadcrumb span:first-child,.crumb-divider{display:none}.top-actions{gap:4px}.top-print span{display:none}.top-print{width:38px;padding:0}.top-actions .button-primary{font-size:11px;padding:0 10px}.project-label,.heading-aside{display:none}.hero{grid-template-columns:1fr;min-height:0}.hero-copy{padding:27px 25px 12px}.hero h1{font-size:39px;margin-top:18px}.hero-lead{font-size:22px}.hero-art{height:200px;justify-content:flex-end}.hero-art svg{max-width:375px}.metric-strip{grid-template-columns:repeat(2,1fr);row-gap:14px}.metric-strip>div{padding:0 15px}.metric-strip>div:nth-child(2){border-right:0}.metric-strip strong{font-size:23px}.step-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.step-card{min-height:190px}.overview-details,.conclusion-card,.references,.python-layout,.run-card,.fifo-layout,.uml-detail-grid{grid-template-columns:1fr}.overview-details{margin-top:26px}.conclusion-card,.references{gap:14px}.references{margin-top:30px}.view-heading{align-items:flex-start;flex-direction:column}.view-actions{flex-wrap:wrap}.sprint-panel{grid-template-columns:1fr;gap:15px}.sprint-main{border-right:0;border-bottom:1px solid #e9f0e9;padding:0 0 15px}.formula-grid,.truth-grid{grid-template-columns:1fr}.variable-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.scenario-content{grid-template-columns:1fr}.scenario-head{flex-direction:column;gap:8px}.fifo-intro{grid-template-columns:1fr auto 1fr;gap:9px}.fifo-intro p{grid-column:1/-1;border:0;border-top:1px solid #d5e7d6;padding:12px 0 0}.source-heading,.table-heading{align-items:flex-start;flex-direction:column}.page-footer{flex-direction:column}.diagram-wrap{min-width:720px}.modal-footer .footer-spacer{min-width:0}}
+@media(max-width:430px){.side-nav .nav-link{font-size:11px}.hero-copy{padding-left:20px;padding-right:20px}.hero-actions{gap:12px}.hero-art{height:175px}.step-grid{grid-template-columns:1fr}.step-card{min-height:165px}.metric-strip span{font-size:9.5px}.sprint-header{align-items:flex-start;flex-direction:column}.board-heading{align-items:flex-start;flex-direction:column}.reference-links{grid-template-columns:1fr}.toggle-grid{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}.form-field.full,.form-hint.full{grid-column:auto}.modal-head,.modal-body{padding-left:16px;padding-right:16px}.modal-footer{padding-left:16px;padding-right:16px}.modal-footer .button{padding-left:10px;padding-right:10px}.form-subheading{flex-direction:column;gap:3px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+@media print{
+  @page{margin:14mm}button{display:none!important}body{background:#fff;color:#222;font-size:10pt}.sidebar,.topbar,.skip-link,.toast,.view-actions,.hero-actions,.next-step,.board-heading button,.board-bottom,.task-move-label,.queue-actions,.source-heading button,.modal,.project-label,.heading-aside,.table-legend{display:none!important}.shell-content{margin:0}.app-shell,main{display:block!important}main{max-width:none;margin:0;padding:0}.js-ready .view,.view{display:block!important;break-before:page}.view:first-child{break-before:auto}.hero{min-height:0;print-color-adjust:exact;-webkit-print-color-adjust:exact}.hero-copy{padding:24px}.hero-art{max-height:220px}.metric-strip,.surface,.step-card,.formula-card,.notice,.case-callout,.fifo-intro{box-shadow:none;print-color-adjust:exact;-webkit-print-color-adjust:exact}.step-grid{grid-template-columns:repeat(3,1fr)}.step-card{min-height:0;break-inside:avoid}.step-link{display:none}.overview-details,.conclusion-card,.references,.python-layout,.fifo-layout,.uml-detail-grid{break-inside:avoid}.references{display:block;break-inside:auto;margin:25px 0}.reference-links{display:block}.reference-links a{display:block;border:0;padding:4px 0;font-size:9pt}.reference-links a .icon{display:none}.references a:after{content:' (' attr(href) ')';font-weight:400;overflow-wrap:anywhere}.kanban-board,.board-scroller{display:none}.print-only#print-all-sprints{display:block}.print-sprint{break-inside:avoid;border-top:1px solid #ddd;margin-top:15px}.print-sprint pre,#print-report pre{white-space:pre-wrap;overflow-wrap:anywhere;font:8.5pt/1.15 monospace}.source-panel[hidden],.source-panel{display:block!important;background:#fff;color:#222;border:1px solid #ddd;overflow:visible}.source-panel pre{max-height:none;overflow:visible;white-space:pre-wrap;font-size:8pt}.truth-grid{grid-template-columns:repeat(2,1fr);gap:8px}.truth-card{break-inside:avoid}.truth-card td{padding:3px}.truth-card th{padding:4px}.scenario-card,.case-callout{break-inside:avoid}.toggle-field input{display:none}.diagram-wrap{min-width:0}.diagram-card{break-inside:avoid}.terminal-card{print-color-adjust:exact;-webkit-print-color-adjust:exact}.report-output{white-space:pre-wrap}.print-only#print-report{display:none}body.printing-report .app-shell{display:none!important}body.printing-report #print-report{display:block!important}body.printing-report #print-report h1{font-size:16pt;line-height:1.2;margin:0 0 6pt}body.printing-report #print-report pre{color:#222;margin:0}
+}
+
+  </style>
+</head>
+<body>
+  <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-overview" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-board" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M15 4v16M5.5 8h1M11.5 8h1M17.5 8h1"/></symbol>
+    <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 9 3 3-3 3m6 0h4"/></symbol>
+    <symbol id="i-logic" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16M9 3v18M16 3v18"/></symbol>
+    <symbol id="i-queue" viewBox="0 0 24 24"><path d="M4 6h12M4 12h9M4 18h12m1-9 3 3-3 3"/></symbol>
+    <symbol id="i-diagram" viewBox="0 0 24 24"><rect x="8" y="3" width="8" height="5" rx="1"/><rect x="2" y="16" width="7" height="5" rx="1"/><rect x="15" y="16" width="7" height="5" rx="1"/><path d="M12 8v4M5.5 16v-4h13v4"/></symbol>
+    <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 8V3h10v5M7 16H4V9h16v7h-3M7 13h10v8H7zM17 11h.01"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v11m-4-4 4 4 4-4M4 17v3h16v-3"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9M4 16l-1 5 5-1L19 9l-4-4L4 16zM14 6l4 4"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v5h4M9 12h6m-6 4h6"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M13 4h7v7M20 4l-9 9M18 14v6H4V6h6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 4h4M6 7l1 13h10l1-13M10 11v5m4-5v5"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 4h16v12H9l-5 4V4z"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5M19 12a7 7 0 0 0-12-5L4 10m1 2a7 7 0 0 0 12 5l3-3"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <div class="app-shell" id="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#inicio" aria-label="Clínica Vida+, ir para visão geral">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span></span>
+        <span class="brand-copy"><strong>Clínica Vida<span>+</span></strong><small>PROJETO ACADÊMICO</small></span>
+      </a>
+      <div class="sidebar-label">ÁREA DO PROJETO</div>
+      <nav class="side-nav" aria-label="Seções do projeto">
+        <a href="#inicio" data-route="inicio" class="nav-link"><svg class="icon"><use href="#i-overview"/></svg><span>Visão geral</span></a>
+        <div class="nav-group-label">OS CINCO PASSOS</div>
+        <a href="#sprints" data-route="sprints" class="nav-link"><svg class="icon"><use href="#i-board"/></svg><span>Planejamento ágil</span><small>01</small></a>
+        <a href="#python" data-route="python" class="nav-link"><svg class="icon"><use href="#i-terminal"/></svg><span>Cadastro em Python</span><small>02</small></a>
+        <a href="#logica" data-route="logica" class="nav-link"><svg class="icon"><use href="#i-logic"/></svg><span>Lógica proposicional</span><small>03</small></a>
+        <a href="#fila" data-route="fila" class="nav-link"><svg class="icon"><use href="#i-queue"/></svg><span>Fila de pacientes</span><small>04</small></a>
+        <a href="#casos" data-route="casos" class="nav-link"><svg class="icon"><use href="#i-diagram"/></svg><span>Casos de uso</span><small>05</small></a>
+      </nav>
+      <div class="sidebar-note">
+        <span class="sidebar-note-icon"><svg class="icon"><use href="#i-info"/></svg></span>
+        <div><strong>Um espaço para aprender.</strong><p>Conteúdo e informações exclusivamente demonstrativos.</p></div>
+      </div>
+      <div class="sidebar-footer"><span class="status-dot"></span> Ambiente demonstrativo</div>
+    </aside>
+
+    <div class="shell-content">
+      <header class="topbar">
+        <div class="breadcrumb"><span>PROJETO ACADÊMICO</span><span class="crumb-divider">/</span><strong id="current-page">Visão geral</strong></div>
+        <div class="top-actions">
+          <span class="demo-pill"><span class="status-dot"></span> Dados fictícios</span>
+          <button class="button button-quiet top-print" id="print-project" type="button"><svg class="icon"><use href="#i-print"/></svg><span>Imprimir</span></button>
+          <button class="button button-primary" id="export-project" type="button"><svg class="icon"><use href="#i-download"/></svg><span>Exportar projeto</span></button>
+        </div>
+      </header>
+
+      <main id="conteudo" tabindex="-1">
+        <!-- CAPA, INTRODUÇÃO, OBJETIVOS, CONCLUSÃO E REFERÊNCIAS -->
+        <section class="view" id="inicio" aria-labelledby="inicio-title">
+          <div class="page-intro"><div><div class="eyebrow"><span></span> BEM-VINDO AO PROJETO</div><p class="page-kicker">Visão geral</p></div><span class="project-label">PORTFÓLIO ACADÊMICO <span>✳</span></span></div>
+          <div class="hero">
+            <div class="hero-copy">
+              <div class="hero-pill"><span></span> CONHECIMENTO EM PRÁTICA</div>
+              <h1 id="inicio-title">Clínica Vida<span>+</span></h1>
+              <p class="hero-lead">Gestão que cuida.<br><em>Aprendizado que transforma.</em></p>
+              <p class="hero-description">Um projeto acadêmico que conecta tecnologia, organização e cuidado em cinco passos.</p>
+              <div class="hero-actions"><a class="button button-light" href="#sprints">Explorar o projeto <svg class="icon"><use href="#i-arrow"/></svg></a><a class="hero-link" href="#sobre-projeto">Conheça a proposta <span>↓</span></a></div>
+            </div>
+            <div class="hero-art" aria-hidden="true">
+              <svg viewBox="0 0 560 340" xmlns="http://www.w3.org/2000/svg">
+                <defs><linearGradient id="art-bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#e6f1df"/><stop offset="1" stop-color="#b8d5bb"/></linearGradient><filter id="art-shadow"><feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#103d2c" flood-opacity=".13"/></filter></defs>
+                <circle cx="277" cy="166" r="147" fill="#77ae92" opacity=".30"/><circle cx="414" cy="70" r="38" fill="#b5d7af" opacity=".34"/>
+                <path d="M57 277h427" stroke="#b5d6bc" stroke-width="2" opacity=".65"/>
+                <path d="M103 276V139c0-69 56-125 125-125h38c69 0 125 56 125 125v137" fill="url(#art-bg)" opacity=".62"/>
+                <path d="M124 276V148c0-58 47-105 105-105h36c58 0 105 47 105 105v128" fill="#d3e8d5" opacity=".58"/>
+                <rect x="173" y="57" width="194" height="223" rx="13" fill="#f8fbf4" filter="url(#art-shadow)" transform="rotate(5 270 169)"/>
+                <g transform="rotate(5 270 169)"><rect x="193" y="77" width="155" height="34" rx="7" fill="#e6f2e9"/><rect x="205" y="87" width="18" height="14" rx="4" fill="#7fb99a"/><path d="M232 88h80M232 97h52" stroke="#80a993" stroke-width="4" stroke-linecap="round" opacity=".8"/><rect x="193" y="125" width="155" height="31" rx="6" fill="#f2f7f0"/><circle cx="207" cy="140" r="7" fill="#c6e4cd"/><path d="m204 140 2 2 4-5M224 136h71M224 144h48" fill="none" stroke="#81ab93" stroke-width="3" stroke-linecap="round"/><rect x="193" y="165" width="155" height="31" rx="6" fill="#f2f7f0"/><circle cx="207" cy="180" r="7" fill="#c6e4cd"/><path d="m204 180 2 2 4-5M224 176h89M224 184h56" fill="none" stroke="#81ab93" stroke-width="3" stroke-linecap="round"/><rect x="193" y="211" width="155" height="39" rx="7" fill="#e9f3e8"/><path d="M207 235v-8m12 8v-14m12 14v-10m12 10v-19m12 19v-13m12 13v-21m12 21v-15m12 15v-24m12 24v-19" stroke="#8abca0" stroke-width="5" stroke-linecap="round"/></g>
+                <rect x="79" y="177" width="127" height="79" rx="12" fill="#ffffff" filter="url(#art-shadow)"/><circle cx="108" cy="204" r="14" fill="#e0f2e6"/><path d="M108 197v14m-7-7h14" stroke="#3b8066" stroke-width="3" stroke-linecap="round"/><path d="M130 199h48M130 208h34M95 234h93" stroke="#b8d0bf" stroke-width="5" stroke-linecap="round"/>
+                <g transform="translate(398 179)"><path d="M21 93c0-35-2-61-3-74M22 58C1 52-2 39 0 27c17 2 27 15 22 31ZM20 42C20 23 30 11 43 9c2 16-6 28-23 33ZM22 68c4-16 17-24 30-22-1 15-12 23-30 22Z" fill="#97c9a5"/><path d="M4 88h38l-5 28H10z" fill="#d8b887"/><path d="M22 90V27" stroke="#6fa681" stroke-width="2"/></g>
+                <circle cx="416" cy="108" r="26" fill="#e1f2d7"/><path d="M416 96v24m-12-12h24" stroke="#619c76" stroke-width="5" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="metric-strip" aria-label="Resumo do projeto">
+            <div><strong>05</strong><span>etapas integradas</span></div><div><strong>02</strong><span>regras de atendimento</span></div><div><strong>16</strong><span>combinações lógicas</span></div><div><strong>03</strong><span>relações «include»</span></div>
+          </div>
+
+          <div class="content-heading" id="passos"><div><div class="eyebrow"><span></span> O QUE VOCÊ VAI ENCONTRAR</div><h2>Uma jornada em cinco passos.</h2><p>Explore cada etapa e acompanhe como as partes se conectam.</p></div><span class="heading-aside">DO PLANEJAMENTO À MODELAGEM</span></div>
+          <div class="step-grid">
+            <a class="step-card" href="#sprints"><div class="step-card-top"><span class="step-icon mint"><svg class="icon"><use href="#i-board"/></svg></span><span class="step-number">01</span></div><span class="step-tag">GESTÃO ÁGIL</span><h3>Planejamento de sprints</h3><p>Organize tarefas e acompanhe a evolução em um quadro visual.</p><span class="step-link">Explorar etapa <svg class="icon"><use href="#i-arrow"/></svg></span></a>
+            <a class="step-card" href="#python"><div class="step-card-top"><span class="step-icon sand"><svg class="icon"><use href="#i-terminal"/></svg></span><span class="step-number">02</span></div><span class="step-tag">PROGRAMAÇÃO</span><h3>Cadastro em Python</h3><p>Um programa executável no terminal para cadastrar e consultar pacientes.</p><span class="step-link">Explorar etapa <svg class="icon"><use href="#i-arrow"/></svg></span></a>
+            <a class="step-card" href="#logica"><div class="step-card-top"><span class="step-icon lavender"><svg class="icon"><use href="#i-logic"/></svg></span><span class="step-number">03</span></div><span class="step-tag">LÓGICA</span><h3>Regras de atendimento</h3><p>Visualize as expressões e todas as combinações das tabelas-verdade.</p><span class="step-link">Explorar etapa <svg class="icon"><use href="#i-arrow"/></svg></span></a>
+            <a class="step-card" href="#fila"><div class="step-card-top"><span class="step-icon sky"><svg class="icon"><use href="#i-queue"/></svg></span><span class="step-number">04</span></div><span class="step-tag">ESTRUTURA DE DADOS</span><h3>Fila de pacientes</h3><p>Entenda a ordem de chegada com pseudocódigo e uma demonstração FIFO.</p><span class="step-link">Explorar etapa <svg class="icon"><use href="#i-arrow"/></svg></span></a>
+            <a class="step-card" href="#casos"><div class="step-card-top"><span class="step-icon rose"><svg class="icon"><use href="#i-diagram"/></svg></span><span class="step-number">05</span></div><span class="step-tag">MODELAGEM</span><h3>Casos de uso</h3><p>Visualize atores, responsabilidades e relações obrigatórias no sistema.</p><span class="step-link">Explorar etapa <svg class="icon"><use href="#i-arrow"/></svg></span></a>
+          </div>
+
+          <div class="overview-details" id="sobre-projeto">
+            <article class="surface editorial-card"><div class="eyebrow"><span></span> INTRODUÇÃO</div><h2>Um projeto, diferentes perspectivas.</h2><p>A Clínica Vida+ é um cenário fictício para integrar práticas de gestão de projetos e fundamentos de desenvolvimento de software. Cada etapa resolve uma parte do problema: organizar o trabalho, estruturar um cadastro e representar decisões e fluxos.</p><p>O quadro é uma demonstração local, e o programa Python funciona no terminal. Nenhuma parte desta aplicação deve receber dados pessoais ou médicos reais.</p></article>
+            <article class="surface editorial-card objectives"><div class="eyebrow"><span></span> OBJETIVOS</div><h2>O que vamos construir.</h2><ul class="check-list"><li><svg class="icon"><use href="#i-check"/></svg> Planejar e acompanhar atividades em sprints.</li><li><svg class="icon"><use href="#i-check"/></svg> Aplicar listas e dicionários em um cadastro Python.</li><li><svg class="icon"><use href="#i-check"/></svg> Validar regras por meio da lógica proposicional.</li><li><svg class="icon"><use href="#i-check"/></svg> Demonstrar a estrutura FIFO e modelar casos de uso.</li></ul></article>
+          </div>
+          <div class="surface conclusion-card"><div><div class="eyebrow"><span></span> CONCLUSÃO</div><h2>Conhecimento conectado, do início ao fim.</h2></div><p>O trabalho une planejamento, implementação e análise formal: a consulta normal é liberada em 3 combinações e a emergência em 6; a fila preserva a ordem de chegada e o diagrama explicita responsabilidades e funcionalidades obrigatórias.</p></div>
+          <div class="references"><div><div class="eyebrow"><span></span> REFERÊNCIAS E FERRAMENTAS</div><h2>Para ir além.</h2><p>Construído com HTML5, CSS3, JavaScript e Python 3; quadro armazenado no navegador e versionamento com Git.</p></div><div class="reference-links"><a href="https://docs.python.org/pt-br/3/tutorial/datastructures.html" target="_blank" rel="noopener noreferrer">Documentação Python <svg class="icon"><use href="#i-external"/></svg></a><a href="https://developer.mozilla.org/pt-BR/docs/Learn_web_development" target="_blank" rel="noopener noreferrer">MDN Web Docs <svg class="icon"><use href="#i-external"/></svg></a><a href="https://support.atlassian.com/trello/docs/creating-a-new-board/" target="_blank" rel="noopener noreferrer">Guia do Trello <svg class="icon"><use href="#i-external"/></svg></a><a href="https://scrumguides.org/scrum-guide.html" target="_blank" rel="noopener noreferrer">Scrum Guide <svg class="icon"><use href="#i-external"/></svg></a><a href="https://www.omg.org/spec/UML/2.5.1/" target="_blank" rel="noopener noreferrer">Especificação UML <svg class="icon"><use href="#i-external"/></svg></a><a href="https://git-scm.com/doc" target="_blank" rel="noopener noreferrer">Documentação Git <svg class="icon"><use href="#i-external"/></svg></a></div></div>
+          <footer class="page-footer"><span>Clínica Vida+ <b>·</b> Projeto acadêmico</span><span>Feito para aprender, pensado para cuidar.</span></footer>
+        </section>
+
+        <!-- PASSO 1 -->
+        <section class="view" id="sprints" aria-labelledby="sprints-title">
+          <div class="view-heading"><div><div class="eyebrow"><span></span> PASSO 01 <i>/</i> GESTÃO ÁGIL</div><h1 id="sprints-title">Planejamento de sprints<span class="title-dot">.</span></h1><p>Da ideia à entrega: visualize tarefas, acompanhe o progresso e registre aprendizados.</p></div><div class="view-actions"><button class="button button-outline" id="open-sprint-report" type="button"><svg class="icon"><use href="#i-file"/></svg> Relatório da sprint</button><button class="button button-primary" id="new-sprint" type="button"><svg class="icon"><use href="#i-plus"/></svg> Nova sprint</button></div></div>
+          <div class="notice notice-trello"><svg class="icon"><use href="#i-info"/></svg><p>Este quadro é uma demonstração local <strong>inspirada no Trello</strong>; não é um quadro criado na plataforma. Para usar o Trello real, <a href="https://support.atlassian.com/trello/docs/creating-a-new-board/" target="_blank" rel="noopener noreferrer">veja como criar um quadro <svg class="icon"><use href="#i-external"/></svg></a>.</p></div>
+          <div class="surface sprint-panel">
+            <div class="sprint-main"><div class="sprint-header"><div><label class="field-label" for="sprint-select">SPRINT EM FOCO</label><div class="select-shell"><select id="sprint-select" aria-label="Selecionar sprint"></select><svg class="icon"><use href="#i-chevron"/></svg></div></div><button class="button button-small button-outline" id="edit-sprint" type="button"><svg class="icon"><use href="#i-edit"/></svg> Editar sprint</button></div><p id="sprint-goal" class="sprint-goal"></p><div class="sprint-meta"><span><svg class="icon"><use href="#i-calendar"/></svg> <span id="sprint-period"></span></span><span class="meta-divider"></span><span id="sprint-duration"></span><span class="meta-divider"></span><span class="sprint-stage" id="sprint-stage"></span></div></div>
+            <div class="sprint-progress"><div class="progress-label"><span>PROGRESSO DA SPRINT</span><strong id="sprint-percent">0%</strong></div><div class="progress-track" role="progressbar" aria-label="Tarefas concluídas da sprint" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="sprint-progress"><span></span></div><div class="progress-caption"><span id="sprint-progress-caption"></span><span id="sprint-checklist-caption"></span></div></div>
+          </div>
+          <div class="board-heading"><div><h2>Quadro de tarefas <span class="small-count" id="task-total">0 tarefas</span></h2><p>Arraste os cartões ou use o seletor para mover uma tarefa.</p></div><button class="button button-primary" id="new-task" type="button"><svg class="icon"><use href="#i-plus"/></svg> Nova tarefa</button></div>
+          <div class="board-scroller"><div class="kanban-board" id="kanban-board" aria-label="Quadro de tarefas da sprint selecionada"></div></div>
+          <div class="board-bottom"><p><span class="status-dot"></span> Alterações salvas apenas neste navegador. Use dados fictícios.</p><button class="text-button" id="reset-demo" type="button"><svg class="icon"><use href="#i-refresh"/></svg> Restaurar dados demonstrativos</button></div>
+          <div id="print-all-sprints" class="print-only"></div>
+          <div class="next-step"><span>PRÓXIMA ETAPA</span><a href="#python">02 · Cadastro em Python <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+        </section>
+
+        <!-- PASSO 2 -->
+        <section class="view" id="python" aria-labelledby="python-title">
+          <div class="view-heading"><div><div class="eyebrow"><span></span> PASSO 02 <i>/</i> PROGRAMAÇÃO</div><h1 id="python-title">Cadastro em Python<span class="title-dot">.</span></h1><p>Um programa de terminal de verdade, organizado com listas e dicionários.</p></div><div class="view-actions"><button class="button button-primary" id="download-python" type="button"><svg class="icon"><use href="#i-download"/></svg> Baixar clinica_vida.py</button></div></div>
+          <div class="notice"><svg class="icon"><use href="#i-info"/></svg><p>Os registros ficam <strong>somente na memória</strong> durante a execução e são apagados ao sair. Use exclusivamente dados fictícios; o programa não é adequado a dados reais.</p></div>
+          <div class="python-layout"><div class="python-explain"><div class="eyebrow"><span></span> O PROGRAMA</div><h2>O essencial, com clareza.</h2><p>O arquivo <code>clinica_vida.py</code> usa uma lista de dicionários para guardar nome, idade e telefone de cada paciente. Seu menu permanece em execução até a opção de sair.</p><ul class="feature-list"><li><span>01</span><div><strong>Cadastro validado</strong><p>Valida nome, idade inteira de 0 a 130 e telefone com DDD.</p></div></li><li><span>02</span><div><strong>Estatísticas confiáveis</strong><p>Total, idade média e pessoas mais novas e mais velhas, inclusive empates.</p></div></li><li><span>03</span><div><strong>Busca e listagem</strong><p>Busca parcial sem diferenciar maiúsculas ou acentos e trata resultados vazios.</p></div></li></ul></div><div class="terminal-card"><div class="terminal-top"><span class="terminal-dots"><i></i><i></i><i></i></span><span>Terminal · exemplo de execução</span><span>PYTHON 3</span></div><pre><span class="terminal-prompt">$</span> python3 clinica_vida.py
+
+Use apenas dados fictícios. Os dados são apagados ao sair.
+
+<span class="terminal-muted">================================================</span>
+          CLÍNICA VIDA+ | CADASTRO
+<span class="terminal-muted">================================================</span>
+1. Cadastrar paciente
+2. Ver estatísticas
+3. Buscar paciente pelo nome
+4. Listar todos os pacientes
+5. Sair
+<span class="terminal-muted">------------------------------------------------</span>
+Escolha uma opção: <span class="terminal-cursor">▍</span></pre><div class="terminal-footer"><span class="terminal-live-dot"></span> Exemplo ilustrativo · execute o arquivo no seu terminal</div></div></div>
+          <div class="surface run-card"><div><div class="eyebrow"><span></span> COMO EXECUTAR</div><h2>Pronto para começar?</h2><p>Baixe o arquivo, abra o terminal na pasta onde ele foi salvo e execute um dos comandos abaixo.</p></div><div class="command-list"><div><span>macOS / LINUX</span><code>python3 clinica_vida.py</code></div><div><span>WINDOWS</span><code>py clinica_vida.py</code></div></div></div>
+          <div class="source-heading"><div><h2>Código-fonte completo</h2><p>O código exibido é o mesmo do arquivo Python disponibilizado.</p></div><button class="button button-outline" id="toggle-source" type="button" aria-expanded="false" aria-controls="source-panel">Visualizar código <svg class="icon"><use href="#i-chevron"/></svg></button></div><div class="source-panel" id="source-panel" hidden><pre><code id="python-source"></code></pre></div>
+          <div class="next-step"><span>PRÓXIMA ETAPA</span><a href="#logica">03 · Lógica proposicional <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+        </section>
+
+        <!-- PASSO 3 -->
+        <section class="view" id="logica" aria-labelledby="logica-title">
+          <div class="view-heading"><div><div class="eyebrow"><span></span> PASSO 03 <i>/</i> LÓGICA PROPOSICIONAL</div><h1 id="logica-title">Regras de atendimento<span class="title-dot">.</span></h1><p>Quatro condições, duas modalidades e todas as 16 combinações possíveis.</p></div></div>
+          <div class="variable-grid"><div><span class="variable-letter">A</span><p>Tem agendamento</p></div><div><span class="variable-letter">B</span><p>Documentos válidos</p></div><div><span class="variable-letter">C</span><p>Médico disponível</p></div><div><span class="variable-letter">D</span><p>Pagamentos em dia</p></div></div>
+          <div class="formula-grid"><article class="formula-card"><div class="formula-top"><span class="formula-icon"><svg class="icon"><use href="#i-calendar"/></svg></span><span class="formula-label">MODALIDADE 01</span></div><h2>Consulta normal</h2><div class="formula">(A ∧ B ∧ C) ∨ (B ∧ C ∧ D)</div><p><strong id="normal-count">3</strong> de 16 situações liberam o atendimento.</p></article><article class="formula-card emergency"><div class="formula-top"><span class="formula-icon"><svg class="icon"><use href="#i-check-circle"/></svg></span><span class="formula-label">MODALIDADE 02</span></div><h2>Emergência</h2><div class="formula">C ∧ (B ∨ D)</div><p><strong id="emergency-count">6</strong> de 16 situações liberam o atendimento.</p></article></div>
+          <div class="surface scenario-card"><div class="scenario-head"><div><div class="eyebrow"><span></span> EXPERIMENTE</div><h2>Analise uma combinação.</h2><p>Alterne as condições para ver o resultado e localizar a linha nas tabelas.</p></div><span class="scenario-note">V = verdadeiro &nbsp;·&nbsp; F = falso</span></div><div class="scenario-content"><div class="toggle-grid"><label class="toggle-field"><input type="checkbox" data-variable="a"><span class="toggle-letter">A</span><span class="toggle-label">Agendamento</span><strong data-var-value="a">F</strong></label><label class="toggle-field"><input type="checkbox" data-variable="b" checked><span class="toggle-letter">B</span><span class="toggle-label">Documentos</span><strong data-var-value="b">V</strong></label><label class="toggle-field"><input type="checkbox" data-variable="c" checked><span class="toggle-letter">C</span><span class="toggle-label">Médico</span><strong data-var-value="c">V</strong></label><label class="toggle-field"><input type="checkbox" data-variable="d"><span class="toggle-letter">D</span><span class="toggle-label">Pagamentos</span><strong data-var-value="d">F</strong></label></div><div class="scenario-outcomes"><div><span>CONSULTA NORMAL</span><strong id="scenario-normal">Não liberada</strong><small id="scenario-normal-explanation"></small></div><div><span>EMERGÊNCIA</span><strong id="scenario-emergency">Liberada</strong><small id="scenario-emergency-explanation"></small></div></div></div></div>
+          <div class="case-callout"><div class="case-mark">?</div><div><strong>O caso solicitado: A=F, B=V, C=V, D=F</strong><p><b>Consulta normal: F.</b> O primeiro termo é falso porque não há agendamento (A=F); o segundo é falso porque os pagamentos não estão em dia (D=F). <b>Emergência: V.</b> O médico está disponível (C=V) e os documentos são válidos (B=V), portanto B ∨ D é verdadeiro.</p></div></div>
+          <div class="table-heading"><div><div class="eyebrow"><span></span> TODAS AS POSSIBILIDADES</div><h2>Tabelas-verdade completas.</h2><p>A linha destacada corresponde à combinação selecionada acima.</p></div><span class="table-legend"><span></span> Combinação selecionada</span></div>
+          <div class="truth-grid"><article class="surface truth-card"><div class="truth-title"><div><span>01 / CONSULTA NORMAL</span><h3>(A ∧ B ∧ C) ∨ (B ∧ C ∧ D)</h3></div><span class="truth-badge" id="normal-table-count">3 liberadas</span></div><div class="table-scroll"><table><caption class="sr-only">Tabela-verdade da consulta normal, com 16 combinações</caption><thead><tr><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th><th scope="col">A∧B∧C</th><th scope="col">B∧C∧D</th><th scope="col">Resultado</th></tr></thead><tbody id="normal-table-body"></tbody></table></div><div class="truth-footer">16 combinações · <strong id="normal-table-footer">3 situações liberadas</strong></div></article><article class="surface truth-card"><div class="truth-title"><div><span>02 / EMERGÊNCIA</span><h3>C ∧ (B ∨ D)</h3></div><span class="truth-badge" id="emergency-table-count">6 liberadas</span></div><div class="table-scroll"><table><caption class="sr-only">Tabela-verdade de emergência, com 16 combinações</caption><thead><tr><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th><th scope="col">B∨D</th><th scope="col">Resultado</th></tr></thead><tbody id="emergency-table-body"></tbody></table></div><div class="truth-footer">16 combinações · <strong id="emergency-table-footer">6 situações liberadas</strong></div></article></div>
+          <div class="next-step"><span>PRÓXIMA ETAPA</span><a href="#fila">04 · Fila de pacientes <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+        </section>
+
+        <!-- PASSO 4 -->
+        <section class="view" id="fila" aria-labelledby="fila-title">
+          <div class="view-heading"><div><div class="eyebrow"><span></span> PASSO 04 <i>/</i> ESTRUTURA DE DADOS</div><h1 id="fila-title">Fila de pacientes<span class="title-dot">.</span></h1><p>Uma demonstração da estrutura FIFO: o primeiro a entrar é o primeiro a sair.</p></div></div>
+          <div class="fifo-intro"><div><span class="large-number">01</span><span>PRIMEIRO A ENTRAR</span></div><svg class="icon fifo-arrow"><use href="#i-arrow"/></svg><div><span class="large-number">01</span><span>PRIMEIRO A SAIR</span></div><p>Novos pacientes entram no fim da fila. O atendimento retira sempre quem está no início, mantendo a ordem dos demais.</p></div>
+          <div class="fifo-layout"><div class="surface pseudo-card"><div class="card-heading"><div><div class="eyebrow"><span></span> ALGORITMO</div><h2>Pseudocódigo</h2></div><span class="code-tag">FIFO</span></div><pre id="pseudocode" aria-label="Pseudocódigo da fila FIFO"></pre><p>São inseridos três pacientes, cada um com nome e CPF. Em seguida, o primeiro é removido e os dois restantes são mostrados na ordem original.</p></div><div class="surface queue-card"><div class="card-heading"><div><div class="eyebrow"><span></span> DEMONSTRAÇÃO</div><h2>A fila em ação</h2></div><span class="queue-count" id="queue-count">3 na fila</span></div><p class="queue-hint">Início da fila <span>→</span> Fim da fila</p><div class="queue-items" id="queue-items" aria-live="polite"></div><div class="queue-feedback" id="queue-feedback">Paciente A será atendido primeiro.</div><div class="queue-actions"><button class="button button-primary" type="button" id="queue-serve"><svg class="icon"><use href="#i-arrow"/></svg> Atender primeiro</button><button class="button button-outline" type="button" id="queue-reset"><svg class="icon"><use href="#i-refresh"/></svg> Reiniciar</button></div><p class="privacy-small">Nomes ilustrativos e CPFs propositalmente inválidos.</p></div></div>
+          <div class="notice fifo-result"><svg class="icon"><use href="#i-info"/></svg><p><strong>Exemplo esperado:</strong> entram Paciente A, Paciente B e Paciente C. Após atender A, permanecem <strong>Paciente B → Paciente C</strong>, nessa ordem.</p></div>
+          <div class="next-step"><span>PRÓXIMA ETAPA</span><a href="#casos">05 · Casos de uso <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+        </section>
+
+        <!-- PASSO 5 -->
+        <section class="view" id="casos" aria-labelledby="casos-title">
+          <div class="view-heading"><div><div class="eyebrow"><span></span> PASSO 05 <i>/</i> MODELAGEM DE SISTEMAS</div><h1 id="casos-title">Casos de uso<span class="title-dot">.</span></h1><p>Uma visão clara de quem interage com o sistema e das ações obrigatórias.</p></div><div class="view-actions"><button class="button button-outline" type="button" id="download-diagram"><svg class="icon"><use href="#i-download"/></svg> Baixar diagrama SVG</button></div></div>
+          <div class="surface diagram-card"><div class="card-heading"><div><div class="eyebrow"><span></span> DIAGRAMA UML</div><h2>Sistema de gestão de consultas</h2><p>Os atores estão fora dos limites do sistema; os casos de uso estão dentro.</p></div><span class="code-tag">UML</span></div><div class="diagram-scroll"><div class="diagram-wrap"><svg xmlns="http://www.w3.org/2000/svg" id="use-case-svg" viewBox="0 0 1200 720" role="img" aria-labelledby="uml-title uml-desc">
+  <title id="uml-title">Diagrama de casos de uso — Clínica Vida+</title>
+  <desc id="uml-desc">Fora dos limites do sistema estão a Secretária e o Médico. A Secretária cadastra pacientes, agenda, confirma e cancela consultas. O Médico cancela consultas e gera receitas. Agendar consulta e Confirmar consulta incluem Verificar cadastro do paciente. Gerar receita inclui Imprimir receita.</desc>
+  <defs>
+    <marker id="include-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+      <path d="M1 1 L10 6 L1 11" fill="none" stroke="#47766b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="720" rx="18" fill="#ffffff"/>
+  <rect x="200" y="50" width="800" height="625" rx="16" fill="#f9fcfa" stroke="#a7beb3" stroke-width="2"/>
+  <text x="225" y="82" fill="#284d42" font-family="Arial, sans-serif" font-size="17" font-weight="700">Sistema de gestão de consultas</text>
+
+  <!-- Associações são linhas contínuas, sem setas. -->
+  <g fill="none" stroke="#759087" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M130 292 L290 150"/>
+    <path d="M130 292 L290 250"/>
+    <path d="M130 292 L290 350"/>
+    <path d="M130 292 L290 545"/>
+    <path d="M1070 342 L865 440"/>
+    <path d="M1130 342 L1150 342 L1150 650 L395 650 L395 581"/>
+  </g>
+
+  <!-- O sentido das setas é do caso base para o caso incluído. -->
+  <g fill="none" stroke="#47766b" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#include-arrow)">
+    <path d="M497 258 L635 288"/>
+    <path d="M497 342 L635 312"/>
+    <path d="M760 476 L760 509"/>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="15" fill="#466f63">
+    <rect x="520" y="235" width="89" height="24" rx="4" fill="#f9fcfa"/><text x="527" y="252">«include»</text>
+    <rect x="520" y="342" width="89" height="24" rx="4" fill="#f9fcfa"/><text x="527" y="359">«include»</text>
+    <rect x="773" y="481" width="89" height="24" rx="4" fill="#f9fcfa"/><text x="780" y="498">«include»</text>
+  </g>
+
+  <!-- Casos de uso dentro dos limites do sistema. -->
+  <g fill="#ffffff" stroke="#39816d" stroke-width="2">
+    <ellipse cx="395" cy="150" rx="105" ry="36"/>
+    <ellipse cx="395" cy="250" rx="105" ry="36"/>
+    <ellipse cx="395" cy="350" rx="105" ry="36"/>
+    <ellipse cx="395" cy="545" rx="105" ry="36"/>
+    <ellipse cx="760" cy="300" rx="130" ry="42"/>
+    <ellipse cx="760" cy="440" rx="105" ry="36"/>
+    <ellipse cx="760" cy="545" rx="105" ry="36"/>
+  </g>
+  <g fill="#213e35" font-family="Arial, sans-serif" font-size="17" text-anchor="middle">
+    <text x="395" y="156">Cadastrar paciente</text>
+    <text x="395" y="256">Agendar consulta</text>
+    <text x="395" y="356">Confirmar consulta</text>
+    <text x="395" y="551">Cancelar consulta</text>
+    <text x="760" y="294"><tspan x="760">Verificar cadastro</tspan><tspan x="760" dy="21">do paciente</tspan></text>
+    <text x="760" y="446">Gerar receita</text>
+    <text x="760" y="551">Imprimir receita</text>
+  </g>
+
+  <!-- Os atores permanecem fora do retângulo que delimita o sistema. -->
+  <g stroke="#28594c" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="100" cy="250" r="18"/><path d="M100 269 L100 330 M70 292 L130 292 M100 330 L76 366 M100 330 L124 366"/>
+    <circle cx="1100" cy="300" r="18"/><path d="M1100 319 L1100 380 M1070 342 L1130 342 M1100 380 L1076 416 M1100 380 L1124 416"/>
+  </g>
+  <g fill="#28594c" font-family="Arial, sans-serif" font-size="17" font-weight="700" text-anchor="middle">
+    <text x="100" y="397">Secretária</text>
+    <text x="1100" y="447">Médico</text>
+  </g>
+</svg>
+</div></div><p class="diagram-hint">Linhas contínuas representam associações. As setas tracejadas apontam do caso de uso principal para o caso incluído.</p></div>
+          <div class="uml-detail-grid"><article class="surface uml-card"><div class="eyebrow"><span></span> ATORES</div><h2>Responsabilidades</h2><div class="actor-line"><span class="actor-avatar">S</span><div><strong>Secretária</strong><p>Cadastrar paciente; agendar, confirmar e cancelar consulta.</p></div></div><div class="actor-line"><span class="actor-avatar doctor">M</span><div><strong>Médico</strong><p>Cancelar consulta e gerar receita.</p></div></div></article><article class="surface uml-card"><div class="eyebrow"><span></span> RELACIONAMENTOS</div><h2>Inclusões obrigatórias</h2><p>«include» indica que o caso incluído é executado obrigatoriamente pelo caso principal.</p><ul class="include-list"><li><strong>Agendar consulta</strong><span>«include» →</span> Verificar cadastro do paciente</li><li><strong>Confirmar consulta</strong><span>«include» →</span> Verificar cadastro do paciente</li><li><strong>Gerar receita</strong><span>«include» →</span> Imprimir receita</li></ul></article></div>
+          <div class="next-step"><span>VOCÊ CHEGOU AO FIM</span><a href="#inicio">Voltar à visão geral <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div id="print-report" class="print-only" aria-hidden="true"><h1>Clínica Vida+ — Relatório de sprint</h1><pre id="print-report-content"></pre></div>
+
+  <dialog id="sprint-dialog" class="modal" aria-labelledby="sprint-dialog-title">
+    <form id="sprint-form"><div class="modal-head"><div><div class="eyebrow"><span></span> PLANEJAMENTO</div><h2 id="sprint-dialog-title">Nova sprint</h2></div><button type="button" class="icon-button close-modal" aria-label="Fechar"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="modal-body"><div class="form-grid"><label class="form-field full">Nome da sprint <input id="sprint-name-input" required maxlength="80" placeholder="Ex.: Sprint 03 — Entrega"></label><label class="form-field full">Objetivo <textarea id="sprint-goal-input" required maxlength="400" rows="2" placeholder="O que esta sprint pretende alcançar?"></textarea></label><label class="form-field full">Status da sprint <select id="sprint-stage-input" required><option value="Planejada">Planejada</option><option value="Em andamento">Em andamento</option><option value="Concluída">Concluída</option></select></label><label class="form-field">Data de início <input id="sprint-start-input" required type="date"></label><label class="form-field">Data de término <input id="sprint-end-input" required type="date"></label><p class="form-hint full" id="sprint-date-hint">A duração inclui as datas de início e de término.</p></div><div class="form-divider"></div><div class="form-subheading"><strong>Retrospectiva e relatório</strong><span>Você pode atualizar estas anotações a qualquer momento.</span></div><div class="form-grid"><label class="form-field full">Resultados e entregas <textarea id="sprint-results-input" maxlength="800" rows="2" placeholder="Quais resultados foram alcançados?"></textarea></label><label class="form-field full">Desafios <textarea id="sprint-challenges-input" maxlength="800" rows="2" placeholder="Que dificuldades apareceram?"></textarea></label><label class="form-field full">Pontos positivos <textarea id="sprint-positives-input" maxlength="800" rows="2" placeholder="O que funcionou bem?"></textarea></label><label class="form-field full">Melhorias <textarea id="sprint-improvements-input" maxlength="800" rows="2" placeholder="O que pode melhorar na próxima sprint?"></textarea></label></div><p class="form-error" id="sprint-error" role="alert"></p></div><div class="modal-footer"><button type="button" class="button button-danger" id="delete-sprint">Excluir sprint</button><span class="footer-spacer"></span><button type="button" class="button button-outline close-modal">Cancelar</button><button type="submit" class="button button-primary">Salvar sprint</button></div></form>
+  </dialog>
+
+  <dialog id="task-dialog" class="modal" aria-labelledby="task-dialog-title">
+    <form id="task-form"><div class="modal-head"><div><div class="eyebrow"><span></span> QUADRO DE TAREFAS</div><h2 id="task-dialog-title">Nova tarefa</h2></div><button type="button" class="icon-button close-modal" aria-label="Fechar"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="modal-body"><div class="form-grid"><label class="form-field full">Título da tarefa <input id="task-title-input" required maxlength="100" placeholder="O que precisa ser feito?"></label><label class="form-field full">Descrição <textarea id="task-description-input" maxlength="800" rows="2" placeholder="Adicione contexto à tarefa."></textarea></label><label class="form-field">Sprint <select id="task-sprint-input" required></select></label><label class="form-field">Status <select id="task-status-input" required></select></label><label class="form-field">Data de entrega <input id="task-due-input" type="date"></label><label class="form-field">Categoria <input id="task-category-input" maxlength="32" placeholder="Ex.: Planejamento"></label></div><div class="form-divider"></div><div class="editor-section"><div class="form-subheading"><strong>Checklist</strong><span>Marque os itens conforme forem concluídos.</span></div><div id="checklist-editor" class="editor-list"></div><div class="inline-add"><input id="checklist-input" maxlength="120" aria-label="Novo item do checklist" placeholder="Adicionar um item ao checklist"><button type="button" id="add-checklist" class="button button-outline button-small"><svg class="icon"><use href="#i-plus"/></svg> Adicionar</button></div></div><div class="form-divider"></div><div class="editor-section"><div class="form-subheading"><strong>Comentários</strong><span>Registre observações da equipe fictícia.</span></div><div id="comments-editor" class="editor-list"></div><div class="inline-add"><input id="comment-input" maxlength="400" aria-label="Novo comentário" placeholder="Escrever um comentário"><button type="button" id="add-comment" class="button button-outline button-small"><svg class="icon"><use href="#i-plus"/></svg> Comentar</button></div></div><p class="form-hint">Itens e comentários são salvos junto com a tarefa.</p></div><div class="modal-footer"><button type="button" class="button button-danger" id="delete-task">Excluir tarefa</button><span class="footer-spacer"></span><button type="button" class="button button-outline close-modal">Cancelar</button><button type="submit" class="button button-primary">Salvar tarefa</button></div></form>
+  </dialog>
+
+  <dialog id="report-dialog" class="modal report-modal" aria-labelledby="report-dialog-title"><div class="modal-head"><div><div class="eyebrow"><span></span> RETROSPECTIVA</div><h2 id="report-dialog-title">Relatório da sprint</h2><p>O relatório reúne o estado atual das tarefas e as anotações da sprint.</p></div><button type="button" class="icon-button close-modal" aria-label="Fechar"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="modal-body"><pre id="report-output" class="report-output"></pre></div><div class="modal-footer"><button type="button" class="button button-outline" id="print-sprint-report"><svg class="icon"><use href="#i-print"/></svg> Imprimir relatório</button><span class="footer-spacer"></span><button type="button" class="button button-primary" id="download-sprint-report"><svg class="icon"><use href="#i-download"/></svg> Baixar relatório .txt</button></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>window.PYTHON_SOURCE = "#!/usr/bin/env python3\n\"\"\"Cadastro acadêmico de pacientes da Clínica Vida+.\n\nOs dados ficam apenas na memória e são descartados ao sair. Utilize somente\ninformações fictícias: este programa não oferece persistência nem segurança\npara dados pessoais ou médicos reais.\n\"\"\"\n\nimport re\nimport unicodedata\n\n\nMENU = \"\"\"\n================================================\n          CLÍNICA VIDA+ | CADASTRO\n================================================\n1. Cadastrar paciente\n2. Ver estatísticas\n3. Buscar paciente pelo nome\n4. Listar todos os pacientes\n5. Sair\n------------------------------------------------\"\"\"\n\n\ndef normalizar(texto):\n    \"\"\"Ignora caixa e acentos nas buscas por nome.\"\"\"\n    decomposicao = unicodedata.normalize(\"NFKD\", texto.strip().casefold())\n    return \"\".join(caractere for caractere in decomposicao\n                   if not unicodedata.combining(caractere))\n\n\ndef solicitar_nome():\n    while True:\n        nome = input(\"Nome: \").strip()\n        if nome and any(caractere.isalpha() for caractere in nome):\n            return nome\n        print(\"Nome inválido. Informe um nome que contenha letras.\")\n\n\ndef solicitar_idade():\n    while True:\n        texto = input(\"Idade (0 a 130): \").strip()\n        try:\n            idade = int(texto)\n        except ValueError:\n            print(\"Idade inválida. Digite um número inteiro entre 0 e 130.\")\n            continue\n        if 0 \u003c= idade \u003c= 130:\n            return idade\n        print(\"Idade inválida. Digite um número inteiro entre 0 e 130.\")\n\n\ndef solicitar_telefone():\n    while True:\n        telefone = input(\"Telefone com DDD (10 ou 11 dígitos): \").strip()\n        digitos = re.sub(r\"\\D\", \"\", telefone)\n        if re.fullmatch(r\"[0-9()+\\-\\s]+\", telefone) and len(digitos) in (10, 11):\n            return telefone\n        print(\"Telefone inválido. Informe 10 ou 11 dígitos, incluindo o DDD.\")\n\n\ndef cadastrar_paciente(pacientes):\n    print(\"\\n--- CADASTRAR PACIENTE ---\")\n    nome = solicitar_nome()\n    idade = solicitar_idade()\n    telefone = solicitar_telefone()\n    pacientes.append({\"nome\": nome, \"idade\": idade, \"telefone\": telefone})\n    print(f\"Paciente '{nome}' cadastrado(a) com sucesso.\")\n\n\ndef calcular_estatisticas(pacientes):\n    \"\"\"Retorna os indicadores ou None quando não há pacientes.\"\"\"\n    if not pacientes:\n        return None\n    menor_idade = min(paciente[\"idade\"] for paciente in pacientes)\n    maior_idade = max(paciente[\"idade\"] for paciente in pacientes)\n    return {\n        \"total\": len(pacientes),\n        \"media\": sum(paciente[\"idade\"] for paciente in pacientes) / len(pacientes),\n        \"mais_novos\": [p for p in pacientes if p[\"idade\"] == menor_idade],\n        \"mais_velhos\": [p for p in pacientes if p[\"idade\"] == maior_idade],\n    }\n\n\ndef nomes_e_idades(pacientes):\n    return \"; \".join(f\"{p['nome']} ({p['idade']} anos)\" for p in pacientes)\n\n\ndef mostrar_estatisticas(pacientes):\n    print(\"\\n--- ESTATÍSTICAS ---\")\n    estatisticas = calcular_estatisticas(pacientes)\n    if estatisticas is None:\n        print(\"Nenhum paciente cadastrado. Cadastre um paciente para ver as estatísticas.\")\n        return\n    media = f\"{estatisticas['media']:.2f}\".replace(\".\", \",\")\n    print(f\"Total de pacientes: {estatisticas['total']}\")\n    print(f\"Idade média: {media} anos\")\n    print(f\"Mais novo(s): {nomes_e_idades(estatisticas['mais_novos'])}\")\n    print(f\"Mais velho(s): {nomes_e_idades(estatisticas['mais_velhos'])}\")\n\n\ndef buscar_pacientes(pacientes, termo):\n    \"\"\"Busca parcial sem diferenciar maiúsculas ou acentos.\"\"\"\n    chave = normalizar(termo)\n    if not chave:\n        return []\n    return [p for p in pacientes if chave in normalizar(p[\"nome\"])]\n\n\ndef exibir_pacientes(pacientes):\n    for indice, paciente in enumerate(pacientes, start=1):\n        print(f\"{indice}. Nome: {paciente['nome']} | Idade: {paciente['idade']} \"\n              f\"| Telefone: {paciente['telefone']}\")\n\n\ndef buscar_por_nome(pacientes):\n    print(\"\\n--- BUSCAR PACIENTE ---\")\n    if not pacientes:\n        print(\"Nenhum paciente cadastrado para buscar.\")\n        return\n    termo = input(\"Nome ou parte do nome: \").strip()\n    if not termo:\n        print(\"Busca inválida. Informe um nome.\")\n        return\n    encontrados = buscar_pacientes(pacientes, termo)\n    if not encontrados:\n        print(\"Nenhum paciente encontrado para esse nome.\")\n        return\n    print(f\"Resultado(s) encontrado(s): {len(encontrados)}\")\n    exibir_pacientes(encontrados)\n\n\ndef listar_pacientes(pacientes):\n    print(\"\\n--- TODOS OS PACIENTES ---\")\n    if not pacientes:\n        print(\"Nenhum paciente cadastrado.\")\n        return\n    exibir_pacientes(pacientes)\n\n\ndef main():\n    pacientes = []  # Lista de dicionários; os dados existem apenas nesta execução.\n    print(\"Use apenas dados fictícios. Os dados são apagados ao sair.\")\n    while True:\n        print(MENU)\n        opcao = input(\"Escolha uma opção: \").strip()\n        if opcao == \"1\":\n            cadastrar_paciente(pacientes)\n        elif opcao == \"2\":\n            mostrar_estatisticas(pacientes)\n        elif opcao == \"3\":\n            buscar_por_nome(pacientes)\n        elif opcao == \"4\":\n            listar_pacientes(pacientes)\n        elif opcao == \"5\":\n            print(\"Programa encerrado. Até mais!\")\n            break\n        else:\n            print(\"Opção inválida. Escolha um número de 1 a 5.\")\n\n\nif __name__ == \"__main__\":\n    try:\n        main()\n    except (EOFError, KeyboardInterrupt):\n        print(\"\\nEntrada encerrada. Programa finalizado sem salvar dados.\")\n";</script>
+  <script>
+/* Núcleo independente da interface: também pode ser testado no Node.js. */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.AppCore = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const STATUS = ['Backlog', 'Sprint Atual', 'Em Progresso', 'Concluído'];
+  const PSEUDOCODE = `INÍCIO
+    fila ← lista vazia
+
+    PARA i DE 1 ATÉ 3 FAÇA
+        LEIA nome
+        LEIA cpf
+        ENFILEIRE(fila, { nome: nome, cpf: cpf })
+    FIM PARA
+
+    paciente_atendido ← DESENFILEIRE(fila)
+    ESCREVA "Paciente em atendimento: ", paciente_atendido
+    ESCREVA "Pacientes restantes, em ordem:"
+    PARA CADA paciente EM fila FAÇA
+        ESCREVA paciente.nome, paciente.cpf
+    FIM PARA
+FIM`;
+
+  function normal(a, b, c, d) {
+    return (a && b && c) || (b && c && d);
+  }
+
+  function emergencia(a, b, c, d) {
+    return c && (b || d);
+  }
+
+  function truthRows() {
+    const rows = [];
+    for (const a of [true, false]) {
+      for (const b of [true, false]) {
+        for (const c of [true, false]) {
+          for (const d of [true, false]) {
+            rows.push({ a, b, c, d, abc: a && b && c, bcd: b && c && d,
+              borD: b || d, normal: normal(a, b, c, d), emergencia: emergencia(a, b, c, d) });
+          }
+        }
+      }
+    }
+    return rows;
+  }
+
+  function toDay(iso) {
+    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+    if (!match) return null;
+    const year = Number(match[1]);
+    const month = Number(match[2]);
+    const day = Number(match[3]);
+    if (year < 100 || year > 9999) return null;
+    const value = Date.UTC(year, month - 1, day);
+    const check = new Date(value);
+    if (check.getUTCFullYear() !== year || check.getUTCMonth() !== month - 1 || check.getUTCDate() !== day) return null;
+    return Math.floor(value / 86400000);
+  }
+
+  function durationDays(start, end) {
+    const first = toDay(start);
+    const last = toDay(end);
+    return first === null || last === null || last < first ? null : last - first + 1;
+  }
+
+  function formatDate(iso) {
+    const day = toDay(iso);
+    if (day === null) return 'Não definida';
+    return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'UTC' }).format(new Date(day * 86400000));
+  }
+
+  function formatDateTime(iso) {
+    const date = new Date(iso);
+    if (!Number.isFinite(date.getTime())) return 'Data não informada';
+    return new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(date);
+  }
+
+  function sprintMetrics(sprint) {
+    const tasks = Array.isArray(sprint.tasks) ? sprint.tasks : [];
+    const done = tasks.filter(task => task.status === 'Concluído').length;
+    const checks = tasks.flatMap(task => Array.isArray(task.checklist) ? task.checklist : []);
+    return { total: tasks.length, done, remaining: tasks.length - done,
+      percent: tasks.length ? Math.round(done * 100 / tasks.length) : 0,
+      checklistTotal: checks.length, checklistDone: checks.filter(item => item.done).length };
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+  }
+
+  function textOrFallback(value) {
+    return String(value ?? '').trim() || 'Não informado.';
+  }
+
+  function sprintReport(sprint) {
+    const stats = sprintMetrics(sprint);
+    const duration = durationDays(sprint.start, sprint.end);
+    const notes = sprint.notes || {};
+    const lines = [
+      `RELATÓRIO DE SPRINT — ${sprint.name}`,
+      'Clínica Vida+ · Projeto acadêmico · Dados fictícios',
+      '',
+      `Objetivo: ${textOrFallback(sprint.goal)}`,
+      `Status da sprint: ${textOrFallback(sprint.status)}`,
+      `Período: ${formatDate(sprint.start)} a ${formatDate(sprint.end)}`,
+      `Duração: ${duration === null ? 'Não definida' : `${duration} dia(s) corrido(s), incluindo as duas datas`}`,
+      `Progresso: ${stats.done} de ${stats.total} tarefa(s) concluída(s) (${stats.percent}%).`,
+      `Checklist: ${stats.checklistDone} de ${stats.checklistTotal} item(ns) concluído(s).`,
+      '',
+      'RESULTADOS',
+      `Tarefas concluídas: ${stats.done}. Tarefas ainda não concluídas: ${stats.remaining}.`,
+      textOrFallback(notes.results),
+      '',
+      'DESAFIOS', textOrFallback(notes.challenges),
+      '',
+      'PONTOS POSITIVOS', textOrFallback(notes.positives),
+      '',
+      'MELHORIAS', textOrFallback(notes.improvements),
+      '',
+      'TAREFAS E ACOMPANHAMENTO',
+    ];
+    if (!sprint.tasks || !sprint.tasks.length) lines.push('Nenhuma tarefa nesta sprint.');
+    (sprint.tasks || []).forEach((task, index) => {
+      const checklist = task.checklist || [];
+      const comments = task.comments || [];
+      lines.push('', `${index + 1}. ${task.title}`, `   Status: ${task.status}`,
+        `   Prazo: ${task.due ? formatDate(task.due) : 'Não definido'}`,
+        `   Descrição: ${textOrFallback(task.description)}`,
+        '   Checklist:');
+      if (!checklist.length) lines.push('   • Nenhum item.');
+      checklist.forEach(item => lines.push(`   • [${item.done ? 'x' : ' '}] ${item.text}`));
+      lines.push('   Comentários:');
+      if (!comments.length) lines.push('   • Nenhum comentário.');
+      comments.forEach(comment => lines.push(`   • ${formatDateTime(comment.createdAt)} — ${comment.text}`));
+    });
+    return lines.join('\n');
+  }
+
+  function vf(value) { return value ? 'V' : 'F'; }
+
+  function projectMarkdown(sprints, pythonSource) {
+    const rows = truthRows();
+    const normalTable = rows.map(r => `| ${vf(r.a)} | ${vf(r.b)} | ${vf(r.c)} | ${vf(r.d)} | ${vf(r.abc)} | ${vf(r.bcd)} | ${vf(r.normal)} |`).join('\n');
+    const emergencyTable = rows.map(r => `| ${vf(r.a)} | ${vf(r.b)} | ${vf(r.c)} | ${vf(r.d)} | ${vf(r.borD)} | ${vf(r.emergencia)} |`).join('\n');
+    const sprintText = sprints.map(s => sprintReport(s).split('\n').map(line => `    ${line}`).join('\n')).join('\n\n');
+    return `# Clínica Vida+ — projeto acadêmico
+
+Relatório exportado em ${new Intl.DateTimeFormat('pt-BR', { dateStyle: 'long', timeStyle: 'short' }).format(new Date())}. Dados exclusivamente fictícios.
+
+## Introdução
+A Clínica Vida+ é um cenário acadêmico para aplicar planejamento ágil, programação, lógica, estruturas de dados e modelagem de sistemas. A aplicação não é um sistema clínico real.
+
+## Objetivos
+- Organizar sprints e acompanhar tarefas em um quadro visual.
+- Implementar um cadastro de pacientes em Python com listas e dicionários.
+- Avaliar regras de atendimento por meio de tabelas-verdade completas.
+- Representar uma fila FIFO e os casos de uso do sistema de consultas.
+
+## Passo 1 — Planejamento ágil
+Quadro inspirado no Trello; ele não é um quadro do Trello real. Progresso = tarefas concluídas ÷ total de tarefas. A duração conta os dias corridos de início e fim, inclusive. O status da sprint é definido manualmente.
+
+${sprintText || 'Nenhuma sprint cadastrada.'}
+
+## Passo 2 — Cadastro em Python
+O arquivo executável clinica_vida.py é um programa de terminal, feito com listas e dicionários. Os dados existem apenas durante a execução; não use dados reais.
+
+\`\`\`python
+${pythonSource.trimEnd()}
+\`\`\`
+
+## Passo 3 — Lógica proposicional
+A = tem agendamento; B = documentos válidos; C = médico disponível; D = pagamentos em dia.
+
+Consulta normal: (A ∧ B ∧ C) ∨ (B ∧ C ∧ D). Liberação em ${rows.filter(r => r.normal).length} de 16 combinações.
+
+| A | B | C | D | A ∧ B ∧ C | B ∧ C ∧ D | Normal |
+|---|---|---|---|---|---|---|
+${normalTable}
+
+Emergência: C ∧ (B ∨ D). Liberação em ${rows.filter(r => r.emergencia).length} de 16 combinações.
+
+| A | B | C | D | B ∨ D | Emergência |
+|---|---|---|---|---|---|
+${emergencyTable}
+
+Para A=F, B=V, C=V, D=F: a consulta normal não é liberada (ambos os termos da disjunção são falsos); a emergência é liberada (C é verdadeiro e B ∨ D também é verdadeiro).
+
+## Passo 4 — Fila FIFO
+O primeiro paciente inserido é o primeiro removido para atendimento; os dois restantes permanecem na ordem de entrada.
+
+\`\`\`text
+${PSEUDOCODE}
+\`\`\`
+
+Exemplo com CPFs propositalmente inválidos: entra Paciente A (000.000.000-00), depois Paciente B (111.111.111-11), depois Paciente C (222.222.222-22). Atende-se A; restam B e C, nessa ordem.
+
+## Passo 5 — Casos de uso
+O diagrama visual está disponível no arquivo assets/diagrama-casos.svg e pode ser baixado na aplicação.
+
+- Secretária: cadastrar paciente, agendar consulta, confirmar consulta e cancelar consulta.
+- Médico: cancelar consulta e gerar receita.
+- Agendar consulta «include» Verificar cadastro do paciente.
+- Confirmar consulta «include» Verificar cadastro do paciente.
+- Gerar receita «include» Imprimir receita.
+
+Os atores ficam fora dos limites do sistema; os casos de uso ficam dentro. Os casos incluídos são obrigatórios.
+
+## Conclusão
+O projeto conecta a organização do trabalho à implementação e à análise formal. A lógica libera a consulta normal em 3 combinações e a emergência em 6; a fila preserva a ordem de chegada e o diagrama explicita responsabilidades e dependências obrigatórias.
+
+## Ferramentas e referências
+- Python 3 — estruturas de dados: https://docs.python.org/pt-br/3/tutorial/datastructures.html
+- HTML, CSS e JavaScript — MDN: https://developer.mozilla.org/pt-BR/docs/Learn_web_development
+- Trello — criação de quadros: https://support.atlassian.com/trello/docs/creating-a-new-board/
+- Scrum Guide: https://scrumguides.org/scrum-guide.html
+- UML 2.5.1 — Object Management Group: https://www.omg.org/spec/UML/2.5.1/
+- Git — documentação: https://git-scm.com/doc
+`;
+  }
+
+  return { STATUS, PSEUDOCODE, normal, emergencia, truthRows, durationDays, formatDate,
+    formatDateTime, sprintMetrics, sprintReport, projectMarkdown, escapeHtml, vf };
+});
+
+  </script>
+  <script>
+/* Interface local do projeto acadêmico Clínica Vida+. Sem dependências externas. */
+(function () {
+  'use strict';
+
+  const C = window.AppCore;
+  const $ = (selector, parent = document) => parent.querySelector(selector);
+  const $$ = (selector, parent = document) => Array.from(parent.querySelectorAll(selector));
+  const escape = C.escapeHtml;
+  const KEY = 'clinica-vida-plus:quadro:v1';
+  const SPRINT_STAGES = ['Planejada', 'Em andamento', 'Concluída'];
+  const ROUTES = { inicio: 'Visão geral', sprints: 'Planejamento ágil', python: 'Cadastro em Python', logica: 'Lógica proposicional', fila: 'Fila de pacientes', casos: 'Casos de uso' };
+  let storageAvailable = true;
+  let toastTimer;
+  let taskDraft = null;
+  let taskOriginSprintId = null;
+  let editingSprintId = null;
+
+  function check(id, text, done) { return { id, text, done }; }
+  function comment(text, createdAt) { return { id: `demo-${createdAt}-${text.slice(0, 3)}`, text, createdAt }; }
+  const DEMO = {
+    version: 1,
+    selectedSprintId: 'sprint-01',
+    sprints: [
+      {
+        id: 'sprint-01', name: 'Sprint 01 — Planejamento', status: 'Em andamento',
+        goal: 'Compreender o cenário da clínica e transformar os requisitos em um plano de trabalho.',
+        start: '2026-03-02', end: '2026-03-13',
+        notes: {
+          results: 'Requisitos iniciais organizados e quadro de trabalho preparado para a equipe fictícia.',
+          challenges: 'Detalhar os critérios de aceite sem perder de vista o escopo da atividade.',
+          positives: 'A divisão das tarefas facilitou a visualização das prioridades.',
+          improvements: 'Revisar riscos e estimativas com antecedência na próxima sprint.'
+        },
+        tasks: [
+          { id: 't-01', title: 'Planejar testes de aceitação', description: 'Definir cenários para validar as entregas de cada etapa.', status: 'Backlog', due: '2026-03-13', category: 'Qualidade', checklist: [check('c-01', 'Identificar cenários de borda', false), check('c-02', 'Revisar critérios de aceite', false)], comments: [comment('Listar casos de erro e lista vazia.', '2026-03-05T12:00:00Z')] },
+          { id: 't-02', title: 'Detalhar critérios de aceite', description: 'Descrever como verificar as funcionalidades obrigatórias.', status: 'Sprint Atual', due: '2026-03-11', category: 'Requisitos', checklist: [check('c-03', 'Registrar requisitos funcionais', true), check('c-04', 'Revisar critérios com a equipe', false)], comments: [] },
+          { id: 't-03', title: 'Modelar fluxos de consulta', description: 'Definir atores, interações e dependências do sistema.', status: 'Em Progresso', due: '2026-03-12', category: 'Modelagem', checklist: [check('c-05', 'Identificar atores', true), check('c-06', 'Desenhar casos de uso', false)], comments: [comment('Representar as inclusões obrigatórias.', '2026-03-09T14:30:00Z')] },
+          { id: 't-04', title: 'Levantar os requisitos', description: 'Separar os cinco passos e suas entregas.', status: 'Concluído', due: '2026-03-04', category: 'Planejamento', checklist: [check('c-07', 'Ler a atividade', true), check('c-08', 'Listar entregáveis', true)], comments: [comment('Escopo inicial consolidado.', '2026-03-04T13:00:00Z')] },
+          { id: 't-05', title: 'Montar o quadro da sprint', description: 'Organizar as atividades nas quatro listas de acompanhamento.', status: 'Concluído', due: '2026-03-06', category: 'Gestão ágil', checklist: [check('c-09', 'Criar listas de status', true), check('c-10', 'Distribuir tarefas', true)], comments: [] }
+        ]
+      },
+      {
+        id: 'sprint-02', name: 'Sprint 02 — Desenvolvimento', status: 'Em andamento',
+        goal: 'Construir as soluções e validar os cálculos e as entregas do projeto.',
+        start: '2026-03-16', end: '2026-03-27',
+        notes: {
+          results: 'Protótipo de cadastro elaborado e regras de atendimento organizadas para verificação.',
+          challenges: 'Conferir todas as combinações e os casos de entrada inválida.',
+          positives: 'As verificações foram divididas em pequenas tarefas independentes.',
+          improvements: 'Automatizar mais cenários antes da apresentação final.'
+        },
+        tasks: [
+          { id: 't-06', title: 'Revisar a apresentação final', description: 'Conferir documentação e impressão de todos os passos.', status: 'Backlog', due: '2026-03-27', category: 'Entrega', checklist: [check('c-11', 'Revisar referências', false), check('c-12', 'Conferir versão para impressão', false)], comments: [] },
+          { id: 't-07', title: 'Validar tabelas-verdade', description: 'Conferir as 16 combinações para cada modalidade.', status: 'Sprint Atual', due: '2026-03-23', category: 'Lógica', checklist: [check('c-13', 'Gerar combinações', true), check('c-14', 'Revisar contagem', false)], comments: [comment('Verificar o caso sem agendamento e sem pagamento.', '2026-03-20T12:00:00Z')] },
+          { id: 't-08', title: 'Construir diagrama de casos de uso', description: 'Associar atores e relacionamentos include.', status: 'Em Progresso', due: '2026-03-25', category: 'Modelagem', checklist: [check('c-15', 'Desenhar limite do sistema', true), check('c-16', 'Revisar setas include', false)], comments: [] },
+          { id: 't-09', title: 'Criar cadastro de pacientes', description: 'Implementar menu e operações no terminal usando Python.', status: 'Concluído', due: '2026-03-20', category: 'Python', checklist: [check('c-17', 'Criar menu em loop', true), check('c-18', 'Tratar entradas inválidas', true)], comments: [comment('Dados mantidos somente em memória.', '2026-03-20T15:20:00Z')] }
+        ]
+      }
+    ]
+  };
+
+  function clone(value) { return JSON.parse(JSON.stringify(value)); }
+  function validStoredState(value) {
+    return value && value.version === 1 && Array.isArray(value.sprints) && value.sprints.length > 0 && value.sprints.every(s =>
+      s && typeof s.id === 'string' && typeof s.name === 'string' && typeof s.goal === 'string' &&
+      C.durationDays(s.start, s.end) !== null && Array.isArray(s.tasks) && s.tasks.every(t =>
+        t && typeof t.id === 'string' && typeof t.title === 'string' && C.STATUS.includes(t.status) && Array.isArray(t.checklist) && Array.isArray(t.comments)));
+  }
+  function loadState() {
+    try {
+      const stored = localStorage.getItem(KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (validStoredState(parsed)) {
+          parsed.sprints.forEach(sprint => { if (!SPRINT_STAGES.includes(sprint.status)) sprint.status = 'Planejada'; });
+          if (!parsed.sprints.some(s => s.id === parsed.selectedSprintId)) parsed.selectedSprintId = parsed.sprints[0].id;
+          return parsed;
+        }
+      }
+    } catch (error) { storageAvailable = false; }
+    return clone(DEMO);
+  }
+  let state = loadState();
+
+  function toast(message) {
+    const node = $('#toast');
+    node.textContent = message;
+    node.classList.add('visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => node.classList.remove('visible'), 3600);
+  }
+  function save() {
+    try {
+      localStorage.setItem(KEY, JSON.stringify(state));
+      storageAvailable = true;
+      return true;
+    } catch (error) {
+      storageAvailable = false;
+      toast('Não foi possível salvar no navegador. As alterações durarão somente até fechar a página.');
+      return false;
+    }
+  }
+  function uid() {
+    return 'id-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+  }
+  function selectedSprint() { return state.sprints.find(s => s.id === state.selectedSprintId) || state.sprints[0]; }
+  function findTask(sprint, taskId) { return sprint && sprint.tasks.find(t => t.id === taskId); }
+  function displayCount(number, singular, plural) { return `${number} ${number === 1 ? singular : plural}`; }
+  function svgIcon(id) { return `<svg class="icon" aria-hidden="true"><use href="#i-${id}"></use></svg>`; }
+  function success(message) { if (storageAvailable) toast(message); }
+
+  function currentHash() {
+    try { return decodeURIComponent(location.hash.slice(1)); } catch (error) { return ''; }
+  }
+  function activateRoute() {
+    const hash = currentHash();
+    const overviewAnchor = hash === 'sobre-projeto' || hash === 'passos';
+    const route = Object.prototype.hasOwnProperty.call(ROUTES, hash) ? hash : 'inicio';
+    $$('.view').forEach(view => view.classList.toggle('active', view.id === route));
+    $$('[data-route]').forEach(link => {
+      const active = link.dataset.route === route;
+      link.classList.toggle('active', active);
+      if (active) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
+    });
+    $('#current-page').textContent = ROUTES[route];
+    document.title = `${ROUTES[route]} | Clínica Vida+`;
+    if (overviewAnchor) requestAnimationFrame(() => document.getElementById(hash).scrollIntoView());
+    else window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+  window.addEventListener('hashchange', activateRoute);
+  // Ao abrir um link direto, o navegador pode rolar para o ID depois da
+  // inicialização. Reposiciona após o carregamento para não esconder o título.
+  window.addEventListener('load', () => {
+    const hash = currentHash();
+    if (hash !== 'sobre-projeto' && hash !== 'passos') {
+      requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+    }
+  }, { once: true });
+
+  function statusOptions(selected) {
+    return C.STATUS.map(status => `<option value="${escape(status)}"${status === selected ? ' selected' : ''}>${escape(status)}</option>`).join('');
+  }
+  function sprintOptions(selected) {
+    return state.sprints.map(sprint => `<option value="${escape(sprint.id)}"${sprint.id === selected ? ' selected' : ''}>${escape(sprint.name)}</option>`).join('');
+  }
+  function taskMarkup(task) {
+    const checks = task.checklist || [];
+    const complete = checks.filter(item => item.done).length;
+    const commentCount = (task.comments || []).length;
+    const category = task.category && task.category.trim() ? task.category : 'Geral';
+    return `<article class="task-card" draggable="true" data-task-id="${escape(task.id)}" aria-label="Tarefa: ${escape(task.title)}">
+      <div class="task-topline"><span class="task-category">${escape(category)}</span><button class="task-edit" type="button" data-edit-task="${escape(task.id)}" aria-label="Editar tarefa ${escape(task.title)}">${svgIcon('edit')}</button></div>
+      <button class="task-title" type="button" data-edit-task="${escape(task.id)}">${escape(task.title)}</button>
+      ${task.description ? `<p class="task-description">${escape(task.description)}</p>` : ''}
+      <div class="task-meta"><span>${svgIcon('calendar')} ${task.due ? escape(C.formatDate(task.due)) : 'Sem prazo'}</span><span>${svgIcon('check-circle')} ${complete}/${checks.length}</span><span>${svgIcon('chat')} ${commentCount}</span></div>
+      <label class="task-move-label">Mover para <select data-move-task="${escape(task.id)}" aria-label="Mover ${escape(task.title)} para outro status">${statusOptions(task.status)}</select></label>
+    </article>`;
+  }
+  function renderBoard() {
+    const sprint = selectedSprint();
+    const metrics = C.sprintMetrics(sprint);
+    $('#sprint-select').innerHTML = sprintOptions(sprint.id);
+    $('#sprint-goal').textContent = sprint.goal;
+    $('#sprint-stage').textContent = sprint.status;
+    $('#sprint-period').textContent = `${C.formatDate(sprint.start)} a ${C.formatDate(sprint.end)}`;
+    const days = C.durationDays(sprint.start, sprint.end);
+    $('#sprint-duration').textContent = `${days} ${days === 1 ? 'dia corrido' : 'dias corridos'} (inclusive)`;
+    $('#sprint-percent').textContent = `${metrics.percent}%`;
+    $('#sprint-progress').setAttribute('aria-valuenow', String(metrics.percent));
+    $('#sprint-progress span').style.width = `${metrics.percent}%`;
+    $('#sprint-progress-caption').textContent = `${metrics.done} de ${metrics.total} concluídas`;
+    $('#sprint-checklist-caption').textContent = `${metrics.checklistDone}/${metrics.checklistTotal} itens do checklist`;
+    $('#task-total').textContent = displayCount(metrics.total, 'tarefa', 'tarefas');
+    $('#kanban-board').innerHTML = C.STATUS.map(status => {
+      const tasks = sprint.tasks.filter(task => task.status === status);
+      return `<div class="board-column" data-column-status="${escape(status)}"><div class="column-heading" data-status="${escape(status)}"><span class="column-dot"></span><strong>${escape(status)}</strong><span class="column-count">${tasks.length}</span></div><div class="task-list">${tasks.length ? tasks.map(taskMarkup).join('') : '<div class="empty-column">Nenhuma tarefa por aqui.</div>'}</div></div>`;
+    }).join('');
+    const notice = $('.board-bottom p');
+    notice.innerHTML = storageAvailable
+      ? '<span class="status-dot"></span> Alterações salvas apenas neste navegador. Use dados fictícios.'
+      : '<span class="status-dot"></span> Armazenamento indisponível: as alterações durarão somente nesta página.';
+    renderPrintSprints();
+  }
+  function renderPrintSprints() {
+    $('#print-all-sprints').innerHTML = `<h2>Relatórios de todas as sprints</h2>${state.sprints.map(s => `<article class="print-sprint"><pre>${escape(C.sprintReport(s))}</pre></article>`).join('')}`;
+  }
+  function moveTask(taskId, newStatus) {
+    if (!C.STATUS.includes(newStatus)) return;
+    const task = findTask(selectedSprint(), taskId);
+    if (!task || task.status === newStatus) return;
+    task.status = newStatus;
+    save(); renderBoard(); success(`Tarefa movida para ${newStatus}.`);
+  }
+
+  $('#sprint-select').addEventListener('change', event => { state.selectedSprintId = event.target.value; save(); renderBoard(); });
+  const board = $('#kanban-board');
+  board.addEventListener('click', event => {
+    const trigger = event.target.closest('[data-edit-task]');
+    if (trigger) openTask(trigger.dataset.editTask);
+  });
+  board.addEventListener('change', event => {
+    const select = event.target.closest('[data-move-task]');
+    if (select) moveTask(select.dataset.moveTask, select.value);
+  });
+  board.addEventListener('dragstart', event => {
+    const card = event.target.closest('.task-card');
+    if (!card || !event.dataTransfer) return;
+    event.dataTransfer.setData('text/plain', card.dataset.taskId);
+    event.dataTransfer.effectAllowed = 'move';
+    card.classList.add('dragging');
+  });
+  board.addEventListener('dragend', () => { $$('.dragging,.drag-over', board).forEach(node => node.classList.remove('dragging', 'drag-over')); });
+  board.addEventListener('dragover', event => {
+    const column = event.target.closest('.board-column');
+    if (!column) return;
+    event.preventDefault();
+    if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
+    column.classList.add('drag-over');
+  });
+  board.addEventListener('dragleave', event => {
+    const column = event.target.closest('.board-column');
+    if (column && !column.contains(event.relatedTarget)) column.classList.remove('drag-over');
+  });
+  board.addEventListener('drop', event => {
+    const column = event.target.closest('.board-column');
+    if (!column) return;
+    event.preventDefault();
+    column.classList.remove('drag-over');
+    const id = event.dataTransfer && event.dataTransfer.getData('text/plain');
+    if (id) moveTask(id, column.dataset.columnStatus);
+  });
+  $('#reset-demo').addEventListener('click', () => {
+    if (!window.confirm('Restaurar os dados demonstrativos? Todas as sprints e tarefas alteradas neste navegador serão substituídas.')) return;
+    state = clone(DEMO); save(); renderBoard(); success('Dados demonstrativos restaurados.');
+  });
+
+  function localDate(offsetDays) {
+    const date = new Date(); date.setHours(12, 0, 0, 0); date.setDate(date.getDate() + offsetDays);
+    const pad = value => String(value).padStart(2, '0');
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+  }
+  function updateDateHint() {
+    const start = $('#sprint-start-input').value, end = $('#sprint-end-input').value;
+    const days = C.durationDays(start, end);
+    $('#sprint-date-hint').textContent = days === null
+      ? 'Informe datas válidas; o término não pode ser anterior ao início.'
+      : `Duração: ${days} ${days === 1 ? 'dia corrido' : 'dias corridos'}, incluindo início e término.`;
+  }
+  function openSprint(id) {
+    const sprint = id ? state.sprints.find(item => item.id === id) : null;
+    editingSprintId = sprint ? sprint.id : null;
+    $('#sprint-dialog-title').textContent = sprint ? 'Editar sprint' : 'Nova sprint';
+    $('#sprint-name-input').value = sprint ? sprint.name : '';
+    $('#sprint-goal-input').value = sprint ? sprint.goal : '';
+    $('#sprint-stage-input').value = sprint ? sprint.status : 'Planejada';
+    $('#sprint-start-input').value = sprint ? sprint.start : localDate(0);
+    $('#sprint-end-input').value = sprint ? sprint.end : localDate(13);
+    $('#sprint-results-input').value = sprint ? (sprint.notes?.results || '') : '';
+    $('#sprint-challenges-input').value = sprint ? (sprint.notes?.challenges || '') : '';
+    $('#sprint-positives-input').value = sprint ? (sprint.notes?.positives || '') : '';
+    $('#sprint-improvements-input').value = sprint ? (sprint.notes?.improvements || '') : '';
+    $('#sprint-error').textContent = '';
+    $('#delete-sprint').hidden = !sprint;
+    updateDateHint();
+    $('#sprint-dialog').showModal();
+    $('#sprint-name-input').focus();
+  }
+  $('#new-sprint').addEventListener('click', () => openSprint(null));
+  $('#edit-sprint').addEventListener('click', () => openSprint(selectedSprint().id));
+  $('#sprint-start-input').addEventListener('input', updateDateHint);
+  $('#sprint-end-input').addEventListener('input', updateDateHint);
+  $('#sprint-form').addEventListener('submit', event => {
+    event.preventDefault();
+    const name = $('#sprint-name-input').value.trim();
+    const goal = $('#sprint-goal-input').value.trim();
+    const status = $('#sprint-stage-input').value;
+    const start = $('#sprint-start-input').value, end = $('#sprint-end-input').value;
+    if (!name || !goal || !SPRINT_STAGES.includes(status)) { $('#sprint-error').textContent = 'Preencha o nome, o objetivo e o status da sprint.'; return; }
+    if (C.durationDays(start, end) === null) { $('#sprint-error').textContent = 'Informe datas válidas e um término igual ou posterior ao início.'; return; }
+    const notes = { results: $('#sprint-results-input').value.trim(), challenges: $('#sprint-challenges-input').value.trim(), positives: $('#sprint-positives-input').value.trim(), improvements: $('#sprint-improvements-input').value.trim() };
+    if (editingSprintId) {
+      const sprint = state.sprints.find(s => s.id === editingSprintId);
+      if (!sprint) return;
+      Object.assign(sprint, { name, goal, status, start, end, notes });
+      state.selectedSprintId = sprint.id;
+    } else {
+      const sprint = { id: uid(), name, goal, status, start, end, notes, tasks: [] };
+      state.sprints.push(sprint); state.selectedSprintId = sprint.id;
+    }
+    save(); renderBoard(); $('#sprint-dialog').close(); success('Sprint salva com sucesso.');
+  });
+  $('#delete-sprint').addEventListener('click', () => {
+    const sprint = state.sprints.find(s => s.id === editingSprintId);
+    if (!sprint) return;
+    if (state.sprints.length === 1) { $('#sprint-error').textContent = 'Mantenha pelo menos uma sprint no quadro.'; return; }
+    if (!window.confirm(`Excluir a sprint “${sprint.name}” e suas ${sprint.tasks.length} tarefa(s)? Esta ação não pode ser desfeita.`)) return;
+    state.sprints = state.sprints.filter(s => s.id !== sprint.id); state.selectedSprintId = state.sprints[0].id;
+    save(); renderBoard(); $('#sprint-dialog').close(); success('Sprint excluída.');
+  });
+
+  function renderTaskDraft() {
+    $('#checklist-editor').innerHTML = taskDraft.checklist.length ? taskDraft.checklist.map(item => `<div class="editor-item"><input type="checkbox" data-check-id="${escape(item.id)}" aria-label="Concluir ${escape(item.text)}"${item.done ? ' checked' : ''}><span class="editor-content">${escape(item.text)}</span><button type="button" class="remove-item" data-remove-check="${escape(item.id)}" aria-label="Excluir item ${escape(item.text)}">${svgIcon('trash')}</button></div>`).join('') : '<p class="editor-empty">Nenhum item adicionado.</p>';
+    $('#comments-editor').innerHTML = taskDraft.comments.length ? taskDraft.comments.map(item => `<div class="editor-item"><div class="editor-content">${escape(item.text)}<small>${escape(C.formatDateTime(item.createdAt))}</small></div><button type="button" class="remove-item" data-remove-comment="${escape(item.id)}" aria-label="Excluir comentário">${svgIcon('trash')}</button></div>`).join('') : '<p class="editor-empty">Nenhum comentário adicionado.</p>';
+  }
+  function openTask(id) {
+    const sprint = selectedSprint();
+    const task = id ? findTask(sprint, id) : null;
+    taskOriginSprintId = task ? sprint.id : null;
+    taskDraft = task ? clone(task) : { id: uid(), title: '', description: '', status: 'Backlog', due: '', category: '', checklist: [], comments: [] };
+    $('#task-dialog-title').textContent = task ? 'Editar tarefa' : 'Nova tarefa';
+    $('#task-title-input').value = taskDraft.title;
+    $('#task-description-input').value = taskDraft.description || '';
+    $('#task-sprint-input').innerHTML = sprintOptions(sprint.id);
+    $('#task-status-input').innerHTML = statusOptions(taskDraft.status);
+    $('#task-due-input').value = taskDraft.due || '';
+    $('#task-category-input').value = taskDraft.category || '';
+    $('#checklist-input').value = ''; $('#comment-input').value = '';
+    $('#delete-task').hidden = !task;
+    renderTaskDraft();
+    $('#task-dialog').showModal();
+    $('#task-title-input').focus();
+  }
+  $('#new-task').addEventListener('click', () => openTask(null));
+  function addChecklist() {
+    const input = $('#checklist-input'), text = input.value.trim();
+    if (!text) { input.focus(); return; }
+    taskDraft.checklist.push({ id: uid(), text, done: false }); input.value = ''; renderTaskDraft(); input.focus();
+  }
+  function addComment() {
+    const input = $('#comment-input'), text = input.value.trim();
+    if (!text) { input.focus(); return; }
+    taskDraft.comments.push({ id: uid(), text, createdAt: new Date().toISOString() }); input.value = ''; renderTaskDraft(); input.focus();
+  }
+  $('#add-checklist').addEventListener('click', addChecklist);
+  $('#add-comment').addEventListener('click', addComment);
+  [['#checklist-input', addChecklist], ['#comment-input', addComment]].forEach(([selector, add]) => $(selector).addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); add(); } }));
+  $('#checklist-editor').addEventListener('change', event => {
+    const input = event.target.closest('[data-check-id]');
+    if (!input) return;
+    const item = taskDraft.checklist.find(entry => entry.id === input.dataset.checkId);
+    if (item) item.done = input.checked;
+  });
+  $('#checklist-editor').addEventListener('click', event => {
+    const button = event.target.closest('[data-remove-check]');
+    if (!button) return;
+    taskDraft.checklist = taskDraft.checklist.filter(item => item.id !== button.dataset.removeCheck); renderTaskDraft();
+  });
+  $('#comments-editor').addEventListener('click', event => {
+    const button = event.target.closest('[data-remove-comment]');
+    if (!button) return;
+    taskDraft.comments = taskDraft.comments.filter(item => item.id !== button.dataset.removeComment); renderTaskDraft();
+  });
+  $('#task-form').addEventListener('submit', event => {
+    event.preventDefault();
+    const title = $('#task-title-input').value.trim();
+    const titleInput = $('#task-title-input');
+    if (!title) { titleInput.setCustomValidity('Informe um título para a tarefa.'); titleInput.reportValidity(); titleInput.setCustomValidity(''); return; }
+    const target = state.sprints.find(s => s.id === $('#task-sprint-input').value);
+    const status = $('#task-status-input').value;
+    if (!target || !C.STATUS.includes(status)) return;
+    Object.assign(taskDraft, { title, description: $('#task-description-input').value.trim(), status, due: $('#task-due-input').value, category: $('#task-category-input').value.trim() });
+    if (taskOriginSprintId) {
+      const old = state.sprints.find(s => s.id === taskOriginSprintId);
+      if (old) old.tasks = old.tasks.filter(task => task.id !== taskDraft.id);
+    }
+    target.tasks.push(taskDraft); state.selectedSprintId = target.id;
+    save(); renderBoard(); $('#task-dialog').close(); success('Tarefa salva com sucesso.');
+  });
+  $('#delete-task').addEventListener('click', () => {
+    if (!taskOriginSprintId || !taskDraft) return;
+    if (!window.confirm(`Excluir a tarefa “${taskDraft.title}”? Esta ação não pode ser desfeita.`)) return;
+    const sprint = state.sprints.find(s => s.id === taskOriginSprintId);
+    if (sprint) sprint.tasks = sprint.tasks.filter(task => task.id !== taskDraft.id);
+    save(); renderBoard(); $('#task-dialog').close(); success('Tarefa excluída.');
+  });
+  $$('.close-modal').forEach(button => button.addEventListener('click', () => button.closest('dialog').close()));
+
+  function downloadFile(name, content, type) {
+    const blob = new Blob([content], { type });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url; link.download = name; link.style.display = 'none'; document.body.appendChild(link); link.click(); link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+  }
+  function slug(text) {
+    return text.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'sprint';
+  }
+  $('#open-sprint-report').addEventListener('click', () => {
+    $('#report-output').textContent = C.sprintReport(selectedSprint());
+    $('#report-dialog').showModal();
+  });
+  $('#download-sprint-report').addEventListener('click', () => {
+    downloadFile(`relatorio-${slug(selectedSprint().name)}.txt`, C.sprintReport(selectedSprint()), 'text/plain;charset=utf-8');
+    toast('Relatório da sprint exportado.');
+  });
+  $('#print-sprint-report').addEventListener('click', () => {
+    $('#print-report-content').textContent = C.sprintReport(selectedSprint());
+    document.body.classList.add('printing-report');
+    window.print();
+  });
+  window.addEventListener('afterprint', () => document.body.classList.remove('printing-report'));
+  $('#print-project').addEventListener('click', () => {
+    renderPrintSprints(); document.body.classList.remove('printing-report'); window.print();
+  });
+  $('#export-project').addEventListener('click', () => {
+    downloadFile('clinica-vida-mais-relatorio.md', C.projectMarkdown(state.sprints, window.PYTHON_SOURCE), 'text/markdown;charset=utf-8');
+    toast('Relatório do projeto exportado em Markdown.');
+  });
+  $('#download-python').addEventListener('click', () => {
+    downloadFile('clinica_vida.py', window.PYTHON_SOURCE, 'text/x-python;charset=utf-8');
+    toast('Arquivo Python preparado para download.');
+  });
+  $('#download-diagram').addEventListener('click', () => {
+    downloadFile('diagrama-casos-de-uso.svg', '<?xml version="1.0" encoding="UTF-8"?>\n' + $('#use-case-svg').outerHTML, 'image/svg+xml;charset=utf-8');
+    toast('Diagrama SVG preparado para download.');
+  });
+  $('#python-source').textContent = window.PYTHON_SOURCE;
+  $('#toggle-source').addEventListener('click', () => {
+    const panel = $('#source-panel'); panel.hidden = !panel.hidden;
+    $('#toggle-source').setAttribute('aria-expanded', String(!panel.hidden));
+    $('#toggle-source').innerHTML = `${panel.hidden ? 'Visualizar código' : 'Ocultar código'} ${svgIcon('chevron')}`;
+  });
+
+  const rows = C.truthRows();
+  function tableRow(row, fields, resultKey) {
+    return `<tr data-combination="${[row.a,row.b,row.c,row.d].map(C.vf).join('')}">${fields.map(field => `<td${field === resultKey ? ` class="${row[field] ? 'result-true' : 'result-false'}"` : ''}>${C.vf(row[field])}</td>`).join('')}</tr>`;
+  }
+  function renderTruthTables() {
+    $('#normal-table-body').innerHTML = rows.map(row => tableRow(row, ['a','b','c','d','abc','bcd','normal'], 'normal')).join('');
+    $('#emergency-table-body').innerHTML = rows.map(row => tableRow(row, ['a','b','c','d','borD','emergencia'], 'emergencia')).join('');
+    const n = rows.filter(row => row.normal).length, e = rows.filter(row => row.emergencia).length;
+    $('#normal-count').textContent = n; $('#emergency-count').textContent = e;
+    $('#normal-table-count').textContent = `${n} liberadas`; $('#emergency-table-count').textContent = `${e} liberadas`;
+    $('#normal-table-footer').textContent = `${n} situações liberadas`; $('#emergency-table-footer').textContent = `${e} situações liberadas`;
+  }
+  function updateScenario() {
+    const v = {};
+    $$('[data-variable]').forEach(input => { v[input.dataset.variable] = input.checked; $(`[data-var-value="${input.dataset.variable}"]`).textContent = C.vf(input.checked); });
+    const normal = C.normal(v.a, v.b, v.c, v.d), emergency = C.emergencia(v.a, v.b, v.c, v.d);
+    const n = $('#scenario-normal'), e = $('#scenario-emergency');
+    n.textContent = normal ? 'Liberada' : 'Não liberada'; n.classList.toggle('positive', normal);
+    e.textContent = emergency ? 'Liberada' : 'Não liberada'; e.classList.toggle('positive', emergency);
+    $('#scenario-normal-explanation').textContent = `(A ∧ B ∧ C) = ${C.vf(v.a && v.b && v.c)} · (B ∧ C ∧ D) = ${C.vf(v.b && v.c && v.d)}`;
+    $('#scenario-emergency-explanation').textContent = `C = ${C.vf(v.c)} · (B ∨ D) = ${C.vf(v.b || v.d)}`;
+    const combination = [v.a,v.b,v.c,v.d].map(C.vf).join('');
+    $$('.truth-card tbody tr').forEach(tr => tr.classList.toggle('highlighted', tr.dataset.combination === combination));
+  }
+  $$('[data-variable]').forEach(input => input.addEventListener('change', updateScenario));
+
+  const INITIAL_QUEUE = [
+    { name: 'Paciente A', cpf: '000.000.000-00' },
+    { name: 'Paciente B', cpf: '111.111.111-11' },
+    { name: 'Paciente C', cpf: '222.222.222-22' }
+  ];
+  let queue = clone(INITIAL_QUEUE), lastServed = null;
+  function renderQueue() {
+    $('#queue-count').textContent = displayCount(queue.length, 'na fila', 'na fila');
+    $('#queue-items').innerHTML = queue.length ? queue.map((person, index) => `<div class="queue-item"><span class="queue-index">0${index + 1}</span><div class="queue-person"><strong>${escape(person.name)}</strong><span>CPF ${escape(person.cpf)}</span></div>${index === 0 ? '<span class="queue-first">PRÓXIMO</span>' : ''}</div>`).join('') : '<div class="queue-empty">A fila está vazia.</div>';
+    if (lastServed) $('#queue-feedback').textContent = `${lastServed.name} foi encaminhado(a). ${queue.length ? 'Permanecem: ' + queue.map(person => person.name).join(' → ') + '.' : 'Não há mais pacientes na fila.'}`;
+    else $('#queue-feedback').textContent = 'Paciente A será atendido primeiro.';
+    $('#queue-serve').disabled = queue.length === 0;
+  }
+  $('#queue-serve').addEventListener('click', () => { if (queue.length) { lastServed = queue.shift(); renderQueue(); } });
+  $('#queue-reset').addEventListener('click', () => { queue = clone(INITIAL_QUEUE); lastServed = null; renderQueue(); });
+
+  $('#pseudocode').textContent = C.PSEUDOCODE;
+  renderBoard(); renderTruthTables(); updateScenario(); renderQueue();
+  document.documentElement.classList.add('js-ready');
+  activateRoute();
+})();
+
+  </script>
+</body>
+</html>
